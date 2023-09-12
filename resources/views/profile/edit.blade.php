@@ -79,7 +79,7 @@
                                 <h5 class="title">{{ auth()->user()->name }}</h5>
                             </a>
                             <p class="description">
-                                {{ __('Ceo/Co-Founder') }}
+                                {{ auth()->user()->role }}
                             </p>
                         </div>
                     </p>
