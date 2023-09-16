@@ -113,15 +113,16 @@
                 </div>
                 <div class="card-footer">
                     <div class="button-container">
-                        <button class="btn btn-icon btn-round btn-facebook">
-                            <i class="fab fa-facebook"></i>
-                        </button>
-                        <button class="btn btn-icon btn-round btn-twitter">
-                            <i class="fab fa-twitter"></i>
-                        </button>
-                        <button class="btn btn-icon btn-round btn-google">
-                            <i class="fab fa-google-plus"></i>
-                        </button>
+                        @if (isset(auth()->user()->facebook))
+                            <button class="btn btn-icon btn-round btn-facebook">
+                                <a class="fab fa-facebook" href="{{ auth()->user()->facebook }}"></a>
+                            </button>
+                        @endif
+                        @if (isset(auth()->user()->instagram))
+                            <button class="btn btn-icon btn-round btn-instagram">
+                                <a class="fab fa-instagram" href="{{ auth()->user()->instagram }}"></a>
+                            </button>
+                        @endif
                     </div>
                 </div>
             </div>

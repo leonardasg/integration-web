@@ -50,7 +50,7 @@ class ProfileController extends Controller
         $user = auth()->user();
         $imageController = new ImageController();
 
-        $imageName = $imageController->upload($request, 'avatar');
+        $imageName = $imageController->upload($request, 'user' . $user->id . '-avatar');
 
         if (empty($imageName)) {
             return back()->with('avatar_error', 'Avatar upload failed.');
