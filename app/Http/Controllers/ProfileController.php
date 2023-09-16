@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\ProfileRequest;
 use App\Http\Requests\PasswordRequest;
@@ -21,7 +22,7 @@ class ProfileController extends Controller
     /**
      * Update the profile
      *
-     * @param  \App\Http\Requests\ProfileRequest  $request
+     * @param \App\Http\Requests\ProfileRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(ProfileRequest $request)
@@ -34,7 +35,7 @@ class ProfileController extends Controller
     /**
      * Change the password
      *
-     * @param  \App\Http\Requests\PasswordRequest  $request
+     * @param \App\Http\Requests\PasswordRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function password(PasswordRequest $request)
@@ -43,4 +44,24 @@ class ProfileController extends Controller
 
         return back()->withPasswordStatus(__('Password successfully updated.'));
     }
+
+    public function avatar(Request $request)
+    {
+        $user = auth()->user();
+        $imageController = new ImageController();
+
+        $imageName = $imageController->upload($request, 'avatar');
+
+        if (empty($imageName)) {
+            return back()->with('avatar_error', 'Avatar upload failed.');
+        }
+
+        $imageController->delete($user->avatar);
+
+        $user->avatar = $imageName;
+        $user->save();
+
+        return back()->withAvatarStatus(__('Avatar successfully updated.'));
+    }
+
 }

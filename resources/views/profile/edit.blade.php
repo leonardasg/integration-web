@@ -34,6 +34,32 @@
 
             <div class="card">
                 <div class="card-header">
+                    <h5 class="title">{{ __('Change avatar') }}</h5>
+                </div>
+
+                <form method="post" action="{{ route('profile.avatar') }}" enctype="multipart/form-data">
+                    <div class="card-body">
+                        @csrf
+                        @method('put')
+
+                        @include('alerts.success', ['key' => 'avatar_status'])
+                        @include('alerts.error', ['key' => 'avatar_error'])
+
+                        <div class="form-group{{ $errors->has('image') ? ' has-danger' : '' }}">
+                            <label>{{ __('Avatar') }}</label>
+                            <input type="file" name="image">
+                            @include('alerts.feedback', ['field' => 'image'])
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-fill btn-primary">{{ __('Save') }}</button>
+                    </div>
+                </form>
+            </div>
+
+
+            <div class="card">
+                <div class="card-header">
                     <h5 class="title">{{ __('Password') }}</h5>
                 </div>
                 <form method="post" action="{{ route('profile.password') }}" autocomplete="off">
@@ -75,17 +101,15 @@
                             <div class="block block-three"></div>
                             <div class="block block-four"></div>
                             <a href="#">
-                                <img class="avatar" src="{{ asset('black') }}/img/emilyz.jpg" alt="">
+                                <img class="avatar" src="{{ asset('uploads/' . Auth::user()->avatar) }}" alt="">
                                 <h5 class="title">{{ auth()->user()->name }}</h5>
                             </a>
+
                             <p class="description">
                                 {{ auth()->user()->role }}
                             </p>
                         </div>
                     </p>
-                    <div class="card-description">
-                        {{ __('Do not be scared of the truth because we need to restart the human foundation in truth And I love you like Kanye loves Kanye I love Rick Owens’ bed design but the back is...') }}
-                    </div>
                 </div>
                 <div class="card-footer">
                     <div class="button-container">

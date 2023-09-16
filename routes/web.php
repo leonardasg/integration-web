@@ -36,5 +36,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('profile', ['as' => 'profile.edit', 'uses' => 'App\Http\Controllers\ProfileController@edit']);
 	Route::put('profile', ['as' => 'profile.update', 'uses' => 'App\Http\Controllers\ProfileController@update']);
 	Route::put('profile/password', ['as' => 'profile.password', 'uses' => 'App\Http\Controllers\ProfileController@password']);
+    Route::put('profile/avatar', ['as' => 'profile.avatar', 'uses' => 'App\Http\Controllers\ProfileController@avatar']);
 });
+
+Route::post('/upload-image', 'App\Http\Controllers\ImageController@upload')->name('uploadImage');
 
