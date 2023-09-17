@@ -45,13 +45,13 @@ class PageController extends Controller
     }
 
     /**
-     * Display rtl page
+     * Display add points page
      *
      * @return \Illuminate\View\View
      */
-    public function rtl()
+    public function addTask()
     {
-        return view('pages.rtl');
+        return view('pages.add_task');
     }
 
     /**

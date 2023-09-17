@@ -36,6 +36,12 @@
                                 <p>{{ __('User Management') }}</p>
                             </a>
                         </li>
+                        <li @if ($pageSlug == 'addTask') class="active " @endif>
+                            <a href="{{ route('pages.addTask')  }}">
+                                <i class="tim-icons icon-bullet-list-67"></i>
+                                <p>{{ __('Add Task') }}</p>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </li>
