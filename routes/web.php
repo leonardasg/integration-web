@@ -40,4 +40,5 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 Route::post('/upload-image', 'App\Http\Controllers\ImageController@upload')->name('uploadImage');
+Route::get('/api/users/calculate-points', 'App\Http\Controllers\UserController@calculatePointsForUser');
 
