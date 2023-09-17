@@ -22,6 +22,12 @@
         <link href="{{ asset('black') }}/css/custom.css" rel="stylesheet" />
     </head>
     <body class="{{ $class ?? '' }}">
+        @if (auth()->check())
+            <script>
+                var id_user = {{ auth()->user()->id }};
+            </script>
+        @endif
+
         @auth()
             <div class="wrapper">
                     @include('layouts.navbars.sidebar')

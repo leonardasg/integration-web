@@ -15,35 +15,37 @@
                     <p>{{ __('Dashboard') }}</p>
                 </a>
             </li>
+
             <li>
-                <a data-toggle="collapse" href="#laravel-examples" aria-expanded="true">
+                <a data-toggle="collapse" href="#tasks" aria-expanded="true">
                     <i class="fab fa-laravel" ></i>
-                    <span class="nav-link-text" >{{ __('Laravel Examples') }}</span>
+                    <span class="nav-link-text" >{{ __('Tasks') }}</span>
                     <b class="caret mt-1"></b>
                 </a>
 
                 <div class="collapse show" id="laravel-examples">
                     <ul class="nav pl-4">
-                        <li @if ($pageSlug == 'profile') class="active " @endif>
-                            <a href="{{ route('profile.edit')  }}">
-                                <i class="tim-icons icon-single-02"></i>
-                                <p>{{ __('User Profile') }}</p>
-                            </a>
-                        </li>
-                        <li @if ($pageSlug == 'users') class="active " @endif>
-                            <a href="{{ route('user.index')  }}">
+                        <li @if ($pageSlug == 'tasks') class="active " @endif>
+                            <a href="{{ route('task.tasks')  }}">
                                 <i class="tim-icons icon-bullet-list-67"></i>
-                                <p>{{ __('User Management') }}</p>
+                                <p>{{ __('Task List') }}</p>
                             </a>
                         </li>
-                        <li @if ($pageSlug == 'addTask') class="active " @endif>
-                            <a href="{{ route('pages.addTask')  }}">
+                        <li @if ($pageSlug == 'create') class="active " @endif>
+                            <a href="{{ route('task.create')  }}">
                                 <i class="tim-icons icon-bullet-list-67"></i>
                                 <p>{{ __('Add Task') }}</p>
                             </a>
                         </li>
                     </ul>
                 </div>
+            </li>
+
+            <li @if ($pageSlug == 'profile') class="active " @endif>
+                <a href="{{ route('profile.edit') }}">
+                    <i class="tim-icons icon-single-02"></i>
+                    <p>{{ __('User Profile') }}</p>
+                </a>
             </li>
             <li @if ($pageSlug == 'icons') class="active " @endif>
                 <a href="{{ route('pages.icons') }}">

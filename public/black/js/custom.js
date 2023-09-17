@@ -59,10 +59,9 @@ demo = {
             },
         };
 
-        const userId = 2;
         var datasets = [];
 
-        axios.get(`/api/users/calculate-points?id_user=${userId}`)
+        axios.get(`/api/users/calculate-points?id_user=${id_user}`)
             .then(response => {
                 const levelColors = response.data.level_colors;
                 const pointsToNextLevel = response.data.to_next_level;

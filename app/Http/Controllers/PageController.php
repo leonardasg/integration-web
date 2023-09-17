@@ -45,16 +45,6 @@ class PageController extends Controller
     }
 
     /**
-     * Display add points page
-     *
-     * @return \Illuminate\View\View
-     */
-    public function addTask()
-    {
-        return view('pages.add_task');
-    }
-
-    /**
      * Display typography page
      *
      * @return \Illuminate\View\View
