@@ -25,3 +25,38 @@
     color: #e14eca;
     cursor: pointer;
 }
+
+.role-checkbox span {
+    position: relative;
+    padding-left: 30px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.role-checkbox input[type="checkbox"] {
+    left: 0;
+    top: 0;
+    opacity: 0; /* Hide the default checkbox */
+    cursor: pointer;
+}
+
+/* Style the custom checkbox */
+.role-checkbox input[type="checkbox"] + span::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 15px;
+    height: 15px;
+    background-color: #ccc;
+    border: 1px solid #666;
+    border-radius: 5px;
+}
+
+.role-checkbox input[type="checkbox"]:checked + span::after {
+    background-color: #e14eca;;
+}
+
+

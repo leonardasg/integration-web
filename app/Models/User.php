@@ -6,11 +6,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+
+    public $timestamps = true;
 
     /**
      * The attributes that are mass assignable.
@@ -87,5 +90,26 @@ class User extends Authenticatable
     public function roles()
     {
         return $this->belongsToMany(Role::class, 'role_user', 'id_user', 'id_role');
+    }
+
+    public function updateRoles($roles)
+    {
+        if (!$this->roles()->sync($roles)) {
+            return false;
+        }
+
+        $roles_inserted = $this->roles()->allRelatedIds()->all();
+        $current_date = date('Y-m-d H:i:s');
+        $results = DB::select('SELECT * FROM `role_user` WHERE `id_role` IN (?) AND `id_user` = ?', [implode(',', $roles_inserted), $this->getAuthIdentifier()]);
+        foreach ($results as $role)
+        {
+            if (empty($role->created_at))
+            {
+                DB::update('UPDATE `role_user` SET `created_at`= ? WHERE `id_role`= ? AND `id_user` = ?', [$current_date, $role->id, $this->getAuthIdentifier()]);
+            }
+            DB::update('UPDATE `role_user` SET `updated_at`= ? WHERE `id_role`= ? AND `id_user` = ?', [$current_date, $role->id, $this->getAuthIdentifier()]);
+        }
+
+        return true;
     }
 }

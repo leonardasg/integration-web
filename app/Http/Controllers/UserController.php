@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
@@ -18,7 +19,72 @@ class UserController extends Controller
      */
     public function index(User $model)
     {
-        return view('users.index', ['users' => $model->paginate(15)]);
+        $users = $model->paginate(15);
+
+        foreach ($users as $user)
+        {
+            $roles_name = $user->getRolesName();
+            $user->roles = !empty($roles_name) ? $roles_name : '-';
+        }
+
+        return view('users.index', ['users' => $users]);
+    }
+
+    /**
+     * Display a form of user edition
+     *
+     * @param  \App\Models\User  $model
+     * @return \Illuminate\View\View
+     */
+    public function edit(Request $request)
+    {
+        $user = User::find($request->get('user'));
+        return view('users.user_form', ['user' => $user, 'roles' => Role::all()]);
+    }
+
+    /**
+     * Display a form of user add
+     *
+     * @param  \App\Models\User  $model
+     * @return \Illuminate\View\View
+     */
+    public function create()
+    {
+        return view('users.user_form', ['roles' => Role::all()]);
+    }
+
+    public function update(Request $request)
+    {
+        try {
+            $user = User::find($request->get('user'));
+            if (!$user->update($request->all()))
+            {
+                throw new \Exception('User update failed.');
+            }
+            if (!$user->updateRoles($request->get('roles')))
+            {
+                throw new \Exception('User roles update failed.');
+            }
+            return redirect()->route('users.index')->withStatus(__('User successfully updated.'));
+        }
+        catch (\Exception $e) {
+            return back()->withError(__($e->getMessage()));
+        }
+    }
+
+    public function add(Request $request)
+    {
+        try {
+            $user = User::find($request->get('user'));
+            if (!$user->update($request->all()))
+            {
+                throw new \Exception('Update failed.');
+            }
+            return redirect()->route('users.index')->withStatus(__('User successfully updated.'));
+        }
+        catch (\Exception $e) {
+            return back()->withError(__('User update failed.'));
+        }
     }
 
     public function calculatePointsForUser()

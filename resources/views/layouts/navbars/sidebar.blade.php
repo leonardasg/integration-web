@@ -18,13 +18,13 @@
 
             @if (auth()->user()->hasRole('member'))
                 <li>
-                    <a data-toggle="collapse" href="#tasks" aria-expanded="true">
+                    <a data-toggle="collapse" href="#member" aria-expanded="true">
                         <i class="fab fa-laravel"></i>
-                        <span class="nav-link-text">{{ __('Tasks') }}</span>
+                        <span class="nav-link-text">{{ __('Member Tabs') }}</span>
                         <b class="caret mt-1"></b>
                     </a>
 
-                    <div class="collapse show" id="tasks">
+                    <div class="collapse show" id="member">
                         <ul class="nav pl-4">
                             <li @if ($pageSlug == 'tasks') class="active " @endif>
                                 <a href="{{ route('task.tasks')  }}">
@@ -43,12 +43,58 @@
                 </li>
             @endif
 
-            <li @if ($pageSlug == 'profile') class="active " @endif>
-                <a href="{{ route('profile.edit') }}">
-                    <i class="tim-icons icon-single-02"></i>
-                    <p>{{ __('User Profile') }}</p>
+            @if (auth()->user()->hasRole('admin'))
+                <li>
+                    <a data-toggle="collapse" href="#admin" aria-expanded="true">
+                        <i class="fab fa-laravel"></i>
+                        <span class="nav-link-text">{{ __('Admin Tabs') }}</span>
+                        <b class="caret mt-1"></b>
+                    </a>
+
+                    <div class="collapse show" id="admin">
+                        <ul class="nav pl-4">
+                            <li @if ($pageSlug == 'tasks') class="active " @endif>
+                                <a href="{{ route('task.tasks')  }}">
+                                    <i class="tim-icons icon-bullet-list-67"></i>
+                                    <p>{{ __('Task List') }}</p>
+                                </a>
+                            </li>
+                            <li @if ($pageSlug == 'create') class="active " @endif>
+                                <a href="{{ route('task.create')  }}">
+                                    <i class="tim-icons icon-bullet-list-67"></i>
+                                    <p>{{ __('Add Task') }}</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            @endif
+
+            <li>
+                <a data-toggle="collapse" href="#users" aria-expanded="true">
+                    <i class="fab fa-laravel"></i>
+                    <span class="nav-link-text">{{ __('Users') }}</span>
+                    <b class="caret mt-1"></b>
                 </a>
+
+                <div class="collapse show" id="users">
+                    <ul class="nav pl-4">
+                        <li @if ($pageSlug == 'profile') class="active " @endif>
+                            <a href="{{ route('profile.edit') }}">
+                                <i class="tim-icons icon-single-02"></i>
+                                <p>{{ __('My Profile') }}</p>
+                            </a>
+                        </li>
+                        <li @if ($pageSlug == 'users') class="active " @endif>
+                            <a href="{{ route('users.index')  }}">
+                                <i class="tim-icons icon-bullet-list-67"></i>
+                                <p>{{ __('All Users') }}</p>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </li>
+
             <li @if ($pageSlug == 'icons') class="active " @endif>
                 <a href="{{ route('pages.icons') }}">
                     <i class="tim-icons icon-atom"></i>
