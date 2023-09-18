@@ -16,30 +16,32 @@
                 </a>
             </li>
 
-            <li>
-                <a data-toggle="collapse" href="#tasks" aria-expanded="true">
-                    <i class="fab fa-laravel" ></i>
-                    <span class="nav-link-text" >{{ __('Tasks') }}</span>
-                    <b class="caret mt-1"></b>
-                </a>
+            @if (auth()->user()->hasRole('member'))
+                <li>
+                    <a data-toggle="collapse" href="#tasks" aria-expanded="true">
+                        <i class="fab fa-laravel"></i>
+                        <span class="nav-link-text">{{ __('Tasks') }}</span>
+                        <b class="caret mt-1"></b>
+                    </a>
 
-                <div class="collapse show" id="laravel-examples">
-                    <ul class="nav pl-4">
-                        <li @if ($pageSlug == 'tasks') class="active " @endif>
-                            <a href="{{ route('task.tasks')  }}">
-                                <i class="tim-icons icon-bullet-list-67"></i>
-                                <p>{{ __('Task List') }}</p>
-                            </a>
-                        </li>
-                        <li @if ($pageSlug == 'create') class="active " @endif>
-                            <a href="{{ route('task.create')  }}">
-                                <i class="tim-icons icon-bullet-list-67"></i>
-                                <p>{{ __('Add Task') }}</p>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
+                    <div class="collapse show" id="tasks">
+                        <ul class="nav pl-4">
+                            <li @if ($pageSlug == 'tasks') class="active " @endif>
+                                <a href="{{ route('task.tasks')  }}">
+                                    <i class="tim-icons icon-bullet-list-67"></i>
+                                    <p>{{ __('Task List') }}</p>
+                                </a>
+                            </li>
+                            <li @if ($pageSlug == 'create') class="active " @endif>
+                                <a href="{{ route('task.create')  }}">
+                                    <i class="tim-icons icon-bullet-list-67"></i>
+                                    <p>{{ __('Add Task') }}</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            @endif
 
             <li @if ($pageSlug == 'profile') class="active " @endif>
                 <a href="{{ route('profile.edit') }}">

@@ -37,7 +37,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::put('profile/avatar', ['as' => 'profile.avatar', 'uses' => 'App\Http\Controllers\ProfileController@avatar']);
 });
 
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => ['auth', 'role:member']], function () {
     Route::get('tasks', ['as' => 'task.tasks', 'uses' => 'App\Http\Controllers\TaskController@tasks']);
 
     Route::get('create', ['as' => 'task.create', 'uses' => 'App\Http\Controllers\TaskController@create']);

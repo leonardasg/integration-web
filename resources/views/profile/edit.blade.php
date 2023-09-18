@@ -106,7 +106,7 @@
                             </a>
 
                             <p class="description">
-                                {{ auth()->user()->role }}
+                                {{ auth()->user()->getRolesName() }}
                             </p>
                         </div>
                     </p>

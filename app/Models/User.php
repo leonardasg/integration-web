@@ -47,4 +47,45 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserPoint::class, 'id_user', 'id');
     }
+
+    public function hasRole($role)
+    {
+        return $this->roles()->where('name', $role)->exists();
+    }
+
+    public function getRoles($role = null)
+    {
+        if (isset($role))
+        {
+            return [$this->roles()->where('name', $role)->get()->get(0)->getAttributes()];
+        }
+
+        $roles_array = [];
+        $roles = $this->roles()->get()->all();
+        foreach ($roles as $role)
+        {
+            $roles_array[] = $role->getAttributes();
+        }
+
+        return $roles_array;
+    }
+
+    public function getRolesName($role = null)
+    {
+        $roles = $this->getRoles($role);
+
+        $roles_name = '';
+        foreach ($roles as $role)
+        {
+            $roles_name .= ucfirst($role['name']) . '/';
+        }
+        $roles_name = rtrim($roles_name, '/');
+
+        return $roles_name;
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'role_user', 'id_user', 'id_role');
+    }
 }
