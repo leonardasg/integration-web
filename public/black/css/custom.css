@@ -2,3 +2,26 @@
     font-size: 16px;
     line-height: 40px !important
 }
+
+.internal-table td{
+    border: unset;
+    padding: 0;
+}
+
+.table .actions-col {
+    text-align: center;
+    font-style: italic;
+}
+
+.table .actions-col button{
+    background: unset;
+    border: unset;
+    color: #ba54f5;
+    font-weight: 300;
+    font-style: italic;
+}
+
+.table .actions-col button:hover{
+    color: #e14eca;
+    cursor: pointer;
+}

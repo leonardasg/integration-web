@@ -48,16 +48,24 @@ class TaskController extends Controller
 
     public function add(TaskRequest $request)
     {
-        $task = new Task();
+        try {
+            $task = new Task();
 
-        $task->name = $request->get('name');
-        $task->description = $request->get('description');
-        $task->points = $request->get('points');
-        $task->created_by = auth()->user()->getAuthIdentifier();
+            $task->name = $request->get('name');
+            $task->description = $request->get('description');
+            $task->points = $request->get('points');
+            $task->created_by = auth()->user()->getAuthIdentifier();
 
-        $task->save();
+            if (!$task->save())
+            {
+                throw new \Exception('Add failed.');
+            }
 
-        return back()->withStatus(__('Task successfully added.'));
+            return redirect()->route('task.tasks')->withStatus(__('Task successfully added.'));
+        }
+        catch (\Exception $e) {
+            return back()->withError(__('Task add failed.'));
+        }
     }
 
     public function update(TaskRequest $request)
@@ -68,10 +76,25 @@ class TaskController extends Controller
             {
                 throw new \Exception('Update failed.');
             }
-            return back()->withStatus(__('Task successfully updated.'));
+            return redirect()->route('task.tasks')->withStatus(__('Task successfully updated.'));
         }
         catch (\Exception $e) {
             return back()->withError(__('Task update failed.'));
+        }
+    }
+
+    public function remove(Request $request)
+    {
+        try {
+            $task = Task::find($request->get('id_task'));
+            if (!$task->destroy($task->id))
+            {
+                throw new \Exception('Remove failed.');
+            }
+            return back()->withStatus(__('Task successfully removed.'));
+        }
+        catch (\Exception $e) {
+            return back()->withError(__('Task remove failed.'));
         }
     }
 }

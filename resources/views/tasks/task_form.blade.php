@@ -9,9 +9,7 @@
                 </div>
                 <form method="post" action="{{ isset($task) ? route('task.update', ['task' => $task]) : route('task.add') }}" autocomplete="off">
                     @csrf
-                    @if(isset($task))
-                        @method('put')
-                    @endif
+                    @method('put')
 
                     <div class="card-body">
                         @include('alerts.success')

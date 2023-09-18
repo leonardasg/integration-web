@@ -41,10 +41,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('tasks', ['as' => 'task.tasks', 'uses' => 'App\Http\Controllers\TaskController@tasks']);
 
     Route::get('create', ['as' => 'task.create', 'uses' => 'App\Http\Controllers\TaskController@create']);
-    Route::put('create', ['as' => 'task.add', 'uses' => 'App\Http\Controllers\TaskController@add']);
+    Route::put('add', ['as' => 'task.add', 'uses' => 'App\Http\Controllers\TaskController@add']);
 
     Route::get('edit', ['as' => 'task.edit', 'uses' => 'App\Http\Controllers\TaskController@edit']);
-    Route::put('edit', ['as' => 'task.update', 'uses' => 'App\Http\Controllers\TaskController@update']);
+    Route::put('update', ['as' => 'task.update', 'uses' => 'App\Http\Controllers\TaskController@update']);
+
+    Route::put('remove', ['as' => 'task.remove', 'uses' => 'App\Http\Controllers\TaskController@remove']);
 });
 
 Route::post('/upload-image', 'App\Http\Controllers\ImageController@upload')->name('uploadImage');
