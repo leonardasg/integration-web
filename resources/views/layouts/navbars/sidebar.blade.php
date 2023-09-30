@@ -53,16 +53,10 @@
 
                     <div class="collapse show" id="admin">
                         <ul class="nav pl-4">
-                            <li @if ($pageSlug == 'tasks') class="active " @endif>
-                                <a href="{{ route('task.tasks')  }}">
-                                    <i class="tim-icons icon-bullet-list-67"></i>
-                                    <p>{{ __('Task List') }}</p>
-                                </a>
-                            </li>
-                            <li @if ($pageSlug == 'create') class="active " @endif>
-                                <a href="{{ route('task.create')  }}">
-                                    <i class="tim-icons icon-bullet-list-67"></i>
-                                    <p>{{ __('Add Task') }}</p>
+                            <li @if ($pageSlug == 'user') class="active " @endif>
+                                <a href="{{ route('users.create')  }}">
+                                    <i class="tim-icons icon-single-02"></i>
+                                    <p>{{ __('Add User') }}</p>
                                 </a>
                             </li>
                         </ul>
