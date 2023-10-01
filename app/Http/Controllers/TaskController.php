@@ -16,11 +16,7 @@ class TaskController extends Controller
      */
     public function tasks()
     {
-        $tasks = Task::all();
-        foreach ($tasks as $task) {
-            $created_by = User::find($task->created_by);
-            $task->author_name = $created_by->name;
-        }
+        $tasks = Task::with('user', 'role')->get();
 
         return view('tasks.tasks', ['tasks' => $tasks]);
     }
@@ -32,7 +28,10 @@ class TaskController extends Controller
      */
     public function create()
     {
-        return view('tasks.task_form');
+        $user = auth()->user();
+        $options = $user->getRolesAsOptions();
+
+        return view('tasks.task_form', ['task_types' => $options]);
     }
 
     /**
@@ -42,8 +41,11 @@ class TaskController extends Controller
      */
     public function edit(Request $request)
     {
+        $user = auth()->user();
+        $options = $user->getRolesAsOptions();
+
         $task = Task::find($request->get('task'));
-        return view('tasks.task_form', ['task' => $task]);
+        return view('tasks.task_form', ['task' => $task, 'task_types' => $options]);
     }
 
     public function add(TaskRequest $request)
@@ -55,6 +57,10 @@ class TaskController extends Controller
             $task->description = $request->get('description');
             $task->points = $request->get('points');
             $task->created_by = auth()->user()->getAuthIdentifier();
+            $task->type = $request->get('type');
+            $task->date_from = $request->get('date_from');
+            $task->date_to = $request->get('date_to');
+            $task->active = false;
 
             if (!$task->save())
             {

@@ -14,4 +14,6 @@ return [
         "rgba(0, 191, 255, 0.5)",
         "rgba(255, 215, 0, 0.5)"
     ],
+    'QUEST_ID' => 11,
+    'ADMIN' => 'admin'
 ];

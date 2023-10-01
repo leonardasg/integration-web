@@ -13,7 +13,6 @@
 
                     <div class="card-body">
                         @include('alerts.success')
-                        @include('alerts.error', ['key' => 'error'])
 
                         <div class="form-group{{ $errors->has('name') ? ' has-danger' : '' }}">
                             <label>{{ __('Name') }}</label>

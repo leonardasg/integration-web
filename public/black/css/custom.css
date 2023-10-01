@@ -3,7 +3,7 @@
     line-height: 40px !important
 }
 
-.internal-table td{
+.internal-table td {
     border: unset;
     padding: 0;
 }
@@ -13,7 +13,7 @@
     font-style: italic;
 }
 
-.table .actions-col button{
+.table .actions-col button {
     background: unset;
     border: unset;
     color: #ba54f5;
@@ -21,7 +21,7 @@
     font-style: italic;
 }
 
-.table .actions-col button:hover{
+.table .actions-col button:hover {
     color: #e14eca;
     cursor: pointer;
 }
@@ -57,6 +57,48 @@
 
 .role-checkbox input[type="checkbox"]:checked + span::after {
     background-color: #e14eca;;
+}
+
+.flex-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.add-button {
+    text-transform: uppercase;
+    font-style: italic;
+}
+
+.show-file-select.form-group input[type=file] {
+    opacity: 1;
+}
+
+.form-group select option {
+    background: #27293d;
+}
+
+.red {
+    color: red !important;
+}
+
+.green,
+.table > tbody > tr > td.green {
+    color: limegreen !important;
+}
+
+.purple,
+.table > tbody > tr > td.purple{
+    color: #e14eca !important;
+}
+
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    color: rgba(0, 0, 0, 0);
+    opacity: 1;
+    display: block;
+    background: url('../img/icon-calendar.svg') no-repeat;
+    width: 20px;
+    height: 20px;
+    border-width: thin;
 }
 
 

@@ -55,9 +55,21 @@ Route::group(['middleware' => ['auth', 'role:admin']], function () {
     Route::put('add-user', ['as' => 'users.add', 'uses' => 'App\Http\Controllers\UserController@add']);
 
     Route::get('edit-user', ['as' => 'users.edit', 'uses' => 'App\Http\Controllers\UserController@edit']);
-    Route::put('update-use', ['as' => 'users.update', 'uses' => 'App\Http\Controllers\UserController@update']);
+    Route::put('update-user', ['as' => 'users.update', 'uses' => 'App\Http\Controllers\UserController@update']);
 
-//    Route::put('remove-use', ['as' => 'users.remove', 'uses' => 'App\Http\Controllers\UserController@remove']);
+    Route::put('remove-user', ['as' => 'users.remove', 'uses' => 'App\Http\Controllers\UserController@remove']);
+});
+
+Route::group(['middleware' => ['auth', 'role:admin']], function () {
+    Route::get('roles', ['as' => 'role.index', 'uses' =>'App\Http\Controllers\RoleController@index']);
+
+    Route::get('create-role', ['as' => 'role.create', 'uses' => 'App\Http\Controllers\RoleController@create']);
+    Route::put('add-role', ['as' => 'role.add', 'uses' => 'App\Http\Controllers\RoleController@add']);
+
+    Route::get('edit-role', ['as' => 'role.edit', 'uses' => 'App\Http\Controllers\RoleController@edit']);
+    Route::put('update-role', ['as' => 'role.update', 'uses' => 'App\Http\Controllers\RoleController@update']);
+
+    Route::put('remove-role', ['as' => 'role.remove', 'uses' => 'App\Http\Controllers\RoleController@remove']);
 });
 
 Route::post('/upload-image', 'App\Http\Controllers\ImageController@upload')->name('uploadImage');

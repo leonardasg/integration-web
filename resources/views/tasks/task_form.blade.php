@@ -13,7 +13,6 @@
 
                     <div class="card-body">
                         @include('alerts.success')
-                        @include('alerts.error', ['key' => 'error'])
 
                         <div class="form-group{{ $errors->has('name') ? ' has-danger' : '' }}">
                             <label>{{ __('Name') }}</label>
@@ -27,13 +26,46 @@
                             @include('alerts.feedback', ['field' => 'description'])
                         </div>
 
+                        <div class="form-group{{ $errors->has('type') ? ' has-danger' : '' }}">
+                            <label for="type">{{ __('Type') }}</label>
+                            <select name="type" class="form-control{{ $errors->has('type') ? ' is-invalid' : '' }}">
+                                @foreach($task_types as $type)
+                                    <option value="{{$type['id']}}">{{$type['name']}}</option>
+                                @endforeach
+                            </select>
+                            @include('alerts.feedback', ['field' => 'type'])
+                        </div>
+
                         <div class="form-group{{ $errors->has('points') ? ' has-danger' : '' }}">
                             <label>{{ __('Points') }}</label>
                             <input type="number" name="points" class="form-control{{ $errors->has('points') ? ' is-invalid' : '' }}" placeholder="{{ __('20') }}" value="{{ old('points', isset($task) ? $task->points : '') }}">
                             @include('alerts.feedback', ['field' => 'points'])
                         </div>
+
+                        <div class="form-group{{ $errors->has('date_from') ? ' has-danger' : '' }}">
+                            <label>{{ __('Date From') }}</label>
+                            <input type="datetime-local" name="date_from" class="form-control{{ $errors->has('date_from') ? ' is-invalid' : '' }}" value="{{ old('date_from', isset($task) ? $task->date_from : '') }}">
+                            @include('alerts.feedback', ['field' => 'date_from'])
+                        </div>
+
+                        <div class="form-group{{ $errors->has('date_to') ? ' has-danger' : '' }}">
+                            <label>{{ __('Date To') }}</label>
+                            <input type="datetime-local" name="date_to" class="form-control{{ $errors->has('date_to') ? ' is-invalid' : '' }}" value="{{ old('date_to', isset($task) ? $task->date_to : '') }}">
+                            @include('alerts.feedback', ['field' => 'date_to'])
+                        </div>
+
+                        @if(auth()->user()->hasRole(config('custom.ADMIN')))
+                            <div class="form-group{{ $errors->has('active') ? ' has-danger' : '' }}">
+                                <label for="active">{{ __('Active') }}</label>
+                                <select name="active" class="form-control{{ $errors->has('active') ? ' is-invalid' : '' }}">
+                                    <option value="0">False</option>
+                                    <option value="1">True</option>
+                                </select>
+                                @include('alerts.feedback', ['field' => 'active'])
+                            </div>
+                        @endif
                     </div>
-                    <div class="card-footer">g
+                    <div class="card-footer">
                         <button type="submit" class="btn btn-fill btn-primary">{{ __('Save') }}</button>
                     </div>
                 </form>

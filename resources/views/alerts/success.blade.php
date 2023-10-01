@@ -3,3 +3,5 @@
         {{ session($key ?? 'status') }}
     </div>
 @endif
+
+@include('alerts.error', ['key' => 'error'])

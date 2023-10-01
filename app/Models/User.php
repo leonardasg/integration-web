@@ -98,4 +98,33 @@ class User extends Authenticatable
 
         return true;
     }
+
+    public function getRolesAsOptions()
+    {
+        $roles = $this->getRolesAsType();
+
+        $options = [];
+        foreach ($roles as $role) {
+            $options[] = [
+                'id' => $role['id'],
+                'name' => strtoupper($role['name']),
+            ];
+        }
+        $options[] = [
+            'id' => config('custom.QUEST_ID'),
+            'name' => 'QUEST',
+        ];
+
+        return $options;
+    }
+
+    public function getRolesAsType()
+    {
+        $roles = [];
+        foreach ($this->roles()->where('as_type', true)->get()->all() as $role)
+        {
+            $roles[] = $role->getAttributes();
+        }
+        return $roles;
+    }
 }

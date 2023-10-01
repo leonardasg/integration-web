@@ -16,6 +16,27 @@
                 </a>
             </li>
 
+            @if (auth()->user()->hasRole(config('custom.ADMIN')))
+                <li>
+                    <a data-toggle="collapse" href="#admin" aria-expanded="true">
+                        <i class="fab fa-laravel"></i>
+                        <span class="nav-link-text">{{ __('Admin Tabs') }}</span>
+                        <b class="caret mt-1"></b>
+                    </a>
+
+                    <div class="collapse show" id="admin">
+                        <ul class="nav pl-4">
+                            <li @if ($pageSlug == 'roles') class="active " @endif>
+                                <a href="{{ route('role.index')  }}">
+                                    <i class="tim-icons icon-single-02"></i>
+                                    <p>{{ __('Roles') }}</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            @endif
+
             @if (auth()->user()->hasRole('member'))
                 <li>
                     <a data-toggle="collapse" href="#member" aria-expanded="true">
@@ -29,34 +50,7 @@
                             <li @if ($pageSlug == 'tasks') class="active " @endif>
                                 <a href="{{ route('task.tasks')  }}">
                                     <i class="tim-icons icon-bullet-list-67"></i>
-                                    <p>{{ __('Task List') }}</p>
-                                </a>
-                            </li>
-                            <li @if ($pageSlug == 'create') class="active " @endif>
-                                <a href="{{ route('task.create')  }}">
-                                    <i class="tim-icons icon-bullet-list-67"></i>
-                                    <p>{{ __('Add Task') }}</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-            @endif
-
-            @if (auth()->user()->hasRole('admin'))
-                <li>
-                    <a data-toggle="collapse" href="#admin" aria-expanded="true">
-                        <i class="fab fa-laravel"></i>
-                        <span class="nav-link-text">{{ __('Admin Tabs') }}</span>
-                        <b class="caret mt-1"></b>
-                    </a>
-
-                    <div class="collapse show" id="admin">
-                        <ul class="nav pl-4">
-                            <li @if ($pageSlug == 'user') class="active " @endif>
-                                <a href="{{ route('users.create')  }}">
-                                    <i class="tim-icons icon-single-02"></i>
-                                    <p>{{ __('Add User') }}</p>
+                                    <p>{{ __('Tasks') }}</p>
                                 </a>
                             </li>
                         </ul>
@@ -82,7 +76,7 @@
                         <li @if ($pageSlug == 'users') class="active " @endif>
                             <a href="{{ route('users.index')  }}">
                                 <i class="tim-icons icon-bullet-list-67"></i>
-                                <p>{{ __('All Users') }}</p>
+                                <p>{{ __('Users') }}</p>
                             </a>
                         </li>
                     </ul>

@@ -45,7 +45,7 @@
                         @include('alerts.success', ['key' => 'avatar_status'])
                         @include('alerts.error', ['key' => 'avatar_error'])
 
-                        <div class="form-group{{ $errors->has('image') ? ' has-danger' : '' }}">
+                        <div class="show-file-select form-group{{ $errors->has('image') ? ' has-danger' : '' }}">
                             <label>{{ __('Avatar') }}</label>
                             <input type="file" name="image">
                             @include('alerts.feedback', ['field' => 'image'])

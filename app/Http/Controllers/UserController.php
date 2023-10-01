@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -75,15 +76,43 @@ class UserController extends Controller
     public function add(Request $request)
     {
         try {
-            $user = User::find($request->get('user'));
-            if (!$user->update($request->all()))
+            $user = new User();
+
+            $user->name = $request->get('name');
+            $user->email = $request->get('email');
+
+            $password =  Str::random(12);
+            $user->password = $password;
+
+            if (!$user->save())
             {
-                throw new \Exception('Update failed.');
+                throw new \Exception('User add failed.');
             }
-            return redirect()->route('users.index')->withStatus(__('User successfully updated.'));
+
+            $roles = $request->get('roles');
+            if (!$user->updateRoles($roles))
+            {
+                throw new \Exception('Update add failed.');
+            }
+            return redirect()->route('users.index')->withStatus(__('User successfully added. Password: ' . $password));
         }
         catch (\Exception $e) {
-            return back()->withError(__('User update failed.'));
+            return back()->withError(__('User add failed.'));
+        }
+    }
+
+    public function remove(Request $request)
+    {
+        try {
+            $user = User::find($request->get('id_user'));
+            if (!$user->destroy($user->id))
+            {
+                throw new \Exception('User remove failed.');
+            }
+            return redirect()->route('users.index')->withStatus(__('User successfully removed.'));
+        }
+        catch (\Exception $e) {
+            return back()->withError(__($e->getMessage()));
         }
     }
 

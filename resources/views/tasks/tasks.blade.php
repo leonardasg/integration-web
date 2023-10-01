@@ -6,20 +6,26 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
-                        <div class="card-header card-header-primary">
-                            <h4 class="card-title ">Tasks List</h4>
-                            <p class="card-category">All created tasks</p>
+                        <div class="flex-row card-header card-header-primary">
+                            <h4 class="card-title d-inline">Tasks List</h4>
+                            <div class="dropdown">
+                                <button type="button" class="btn btn-link dropdown-toggle btn-icon" data-toggle="dropdown">
+                                    <i class="tim-icons icon-settings-gear-63"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+                                    <a href="{{route('task.create')}}" class="dropdown-item">Add task</a>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body">
 
                             @include('alerts.success')
-                            @include('alerts.error', ['key' => 'error'])
 
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead class=" text-primary">
                                     <th>
-                                        ID
+                                        No.
                                     </th>
                                     <th>
                                         Name
@@ -28,58 +34,84 @@
                                         Description
                                     </th>
                                     <th>
+                                        Type
+                                    </th>
+                                    <th>
                                         Points
                                     </th>
                                     <th>
-                                        Created by
+                                        Date From
                                     </th>
-                                    <th class="font-italic">
-                                        Actions
+                                    <th>
+                                        Date To
+                                    </th>
+                                    <th>
+                                        Active
+                                    </th>
+                                    <th>
+                                        Created by
                                     </th>
                                     </thead>
                                     <tbody>
 
                                     @foreach($tasks as $task)
-                                        @if (auth()->user()->getAuthIdentifier() == $task->created_by)
-                                            <a href="">
-                                                <tr>
-                                                    <td>{{ $task->id }}</td>
-                                                    <td>{{ $task->name }}</td>
-                                                    <td>{{ $task->description }}</td>
-                                                    <td>{{ $task->points }}</td>
-                                                    <td>You</td>
-                                                    <td>
-                                                        <table class="internal-table">
-                                                                <tr>
-                                                                    <td class="actions-col">
-                                                                        <a href="{{ route('task.edit', ['task' => $task]) }}">edit</a>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="actions-col">
-                                                                        <form method="POST" action="{{ route('task.remove') }}">
-                                                                            @csrf
-                                                                            @method('put')
-
-                                                                            <input type="hidden" name="id_task" value={{ $task->id }}>
-                                                                            <button type="submit">remove</button>
-                                                                        </form>
-                                                                    </td>
-                                                                </tr>
-                                                        </table>
-                                                    </td>
-                                                </tr>
-                                            </a>
-                                        @else
                                             <tr>
-                                                <td>{{ $task->id }}</td>
+                                                <td>{{$loop->index + 1}}</td>
                                                 <td>{{ $task->name }}</td>
                                                 <td>{{ $task->description }}</td>
-                                                <td>{{ $task->points }}</td>
-                                                <td>{{ $task->author_name }}</td>
-                                                <td class="actions-col">-</td>
+                                                @if($task->type == config('custom.QUEST_ID'))
+                                                    <td>QUEST</td>
+                                                    <td>Level Up</td>
+                                                @else
+                                                    <td>{{ $task->role->name }}</td>
+                                                    <td>{{ $task->points }}</td>
+                                                @endif
+
+                                                <td>
+                                                    @if(isset($task->date_from))
+                                                        {{$task->date_from}}
+                                                    @else
+                                                        -
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if(isset($task->date_to))
+                                                        {{$task->date_to}}
+                                                    @else
+                                                        -
+                                                    @endif
+                                                </td>
+
+                                                <td>
+                                                    @if($task->active)
+                                                        <span class="tim-icons green icon-check-2"></span>
+                                                    @else
+                                                        <span class="tim-icons red icon-simple-remove"></span>
+                                                    @endif
+                                                </td>
+
+                                                <td @if (auth()->user()->getAuthIdentifier() == $task->created_by) class="purple" @endif>{{ $task->user->name }}</td>
+                                                @if (auth()->user()->getAuthIdentifier() == $task->created_by || auth()->user()->hasRole('admin'))
+                                                    <td>
+                                                        <div class="dropdown">
+                                                            <button type="button" class="btn btn-link dropdown-toggle btn-icon" data-toggle="dropdown">
+                                                                <i class="tim-icons icon-pencil"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+                                                                <a href="{{ route('task.edit', ['task' => $task]) }}" class="dropdown-item">Edit</a>
+
+                                                                <form method="POST" action="{{ route('task.remove') }}">
+                                                                    @csrf
+                                                                    @method('put')
+
+                                                                    <input type="hidden" name="id_task" value={{ $task->id }}>
+                                                                    <button class="dropdown-item" type="submit">Remove</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                @endif
                                             </tr>
-                                        @endif
                                     @endforeach
                                     </tbody>
                                 </table>
