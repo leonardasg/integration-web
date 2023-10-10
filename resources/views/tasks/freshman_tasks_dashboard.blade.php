@@ -9,11 +9,10 @@
                 @if(!empty($tasks))
                     @foreach($tasks as $task)
                         <tr>
-                            <td>
+                            <td class="checkbox">
                                 <div class="form-check">
                                     <label class="form-check-label">
-                                        <input class="form-check-input task-checkbox" type="checkbox"
-                                               value="{{ $task->id_user_point }}"
+                                        <input class="form-check-input task-checkbox" type="checkbox" value="{{ $task->id_user_point }}"
                                                @if(!empty($task->finished_at)) checked @endif>
                                         <span class="form-check-sign">
                                             <span class="check"></span>
