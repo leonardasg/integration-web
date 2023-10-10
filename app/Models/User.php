@@ -119,6 +119,15 @@ class User extends Authenticatable
     public function getRolesAsType()
     {
         $roles = [];
+		if (auth()->user()->hasRole(config('custom.ADMIN')))
+		{
+			foreach (Role::where('as_type', true)->get() as $role)
+			{
+				$roles[] = $role->getAttributes();
+			}
+			return $roles;
+		}
+
         foreach ($this->roles()->where('as_type', true)->get()->all() as $role)
         {
             $roles[] = $role->getAttributes();

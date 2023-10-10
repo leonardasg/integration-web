@@ -62,7 +62,7 @@
                 </li>
             @endif
 
-            @if (auth()->user()->hasRole('member'))
+            @if (auth()->user()->hasRole('member') || auth()->user()->hasRole(config('custom.ADMIN')))
                 <li>
                     <a data-toggle="collapse" href="#member" aria-expanded="true">
                         <i class="fab fa-laravel"></i>
