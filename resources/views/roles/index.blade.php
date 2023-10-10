@@ -51,7 +51,7 @@
                                                         @method('put')
 
                                                         <input type="hidden" name="id_role" value={{ $role->id }}>
-                                                        <button class="dropdown-item" type="submit">Remove</button>
+                                                        <button class="dropdown-item confirm-form" type="submit" data-confirm="Are you sure you want to remove this role?">Remove</button>
                                                     </form>
                                                 </div>
                                             </div>

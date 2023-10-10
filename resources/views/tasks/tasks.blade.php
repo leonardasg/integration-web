@@ -78,8 +78,7 @@
                                                         @method('put')
 
                                                         <input type="hidden" name="id_task" value={{ $task->id }}>
-                                                        <button class="dropdown-item red" type="submit">Remove
-                                                        </button>
+                                                        <button class="dropdown-item red confirm-form" type="submit" data-confirm="Are you sure you want to remove this task?">Remove</button>
                                                     </form>
                                                     @if($task->active)
                                                         <a class="dropdown-item green" href="#" data-toggle="modal"

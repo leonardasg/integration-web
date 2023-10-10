@@ -176,28 +176,32 @@ custom = {
             var isChecked = $(this).is(':checked');
             var id_user_point = $(this).val();
 
-            if (isChecked !== previousState[id_user_point]) {
                 var confirmationMessage = isChecked
                     ? 'Are you sure to finish this task?'
                     : 'Are you sure to mark this task unfinished?';
 
-                if (confirm(confirmationMessage)) {
-                    axios.post('/api/freshman/finish-task', {
-                        id_user_point: id_user_point,
-                        finished: isChecked
-                    })
-                        .then(function (response) {
-                            console.log(response.data);
-                        })
-                        .catch(function (error) {
-                            console.error(error);
-                        });
-                } else {
-                    $(this).prop('checked', previousState[id_user_point]);
-                }
-            }
+                Swal.fire({
+                    title: confirmationMessage,
+                    showDenyButton: true,
+                    confirmButtonText: 'Yes',
+                    denyButtonText: `No`,
+                }).then((result) => {
+                    if (result.isConfirmed) {
 
-            previousState[id_user_point] = isChecked;
+                        axios.post('/api/freshman/finish-task', {
+                            id_user_point: id_user_point,
+                            finished: isChecked
+                        })
+                            .then(function (response) {
+                                console.log(response.data);
+                            })
+                            .catch(function (error) {
+                                console.error(error);
+                            });
+                    } else if (result.isDenied) {
+                        $(this).prop('checked', !isChecked);
+                    }
+                })
     });
     },
 
@@ -212,6 +216,27 @@ custom = {
                 $(this).closest('.table').css('margin-bottom', '');
             });
         }
-    }
+    },
+
+    confirmFrom: function () {
+        $('.confirm-form').on('click', function() {
+            event.preventDefault();
+            var confirmationMessage = $(this).data('confirm');
+
+            Swal.fire({
+                title: confirmationMessage,
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showDenyButton: true,
+                confirmButtonText: 'Yes!',
+                confirmButtonColor: '#32CD32',
+                denyButtonText: 'No, cancel!',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $(this).closest('form').submit();
+                }
+            })
+        });
+    },
 };
 

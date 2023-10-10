@@ -36,7 +36,7 @@
                                     @method('put')
 
                                     <input type="hidden" name="id_user_point" value={{ $user_point->id_user_point }}>
-                                    <button class="dropdown-item red" type="submit">Unassign</button>
+                                    <button class="dropdown-item red confirm-form" type="submit" data-confirm="Are you sure you want to unassign this user?">Unassign</button>
                                 </form>
 
                                 <form method="POST" action="{{ route('task.verify') }}">
@@ -44,7 +44,7 @@
                                     @method('put')
 
                                     <input type="hidden" name="id_user_point" value={{ $user_point->id_user_point }}>
-                                    <button class="dropdown-item green" type="submit">Verify</button>
+                                    <button class="dropdown-item green confirm-form" type="submit" data-confirm="Are you sure you want to verify that this user has completed this task?">Verify</button>
                                 </form>
                             </div>
                         </div>

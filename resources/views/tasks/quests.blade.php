@@ -13,7 +13,7 @@
                 </div>
             </div>
             <div class="card-body">
-                @include('alerts.success')
+                @include('alerts.success', ['key' => 'quest_status'])
                 <div id="quests" class="table-container">
                     <table class="table tablesorter">
                         <thead class="text-primary">
@@ -40,7 +40,7 @@
                                                     @method('put')
 
                                                     <input type="hidden" name="id_task" value={{ $task->id }}>
-                                                    <button class="dropdown-item red" type="submit">Remove</button>
+                                                    <button class="dropdown-item red confirm-form" type="submit" data-confirm="Are you sure you want to remove this quest?">Remove</button>
                                                 </form>
 
                                                 <a class="dropdown-item assign-freshman green" href="#" data-toggle="modal" data-target="#assign" data-task="{{$task->id}}">Assign freshman</a>

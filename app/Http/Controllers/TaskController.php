@@ -112,8 +112,10 @@ class TaskController extends Controller
     public function assign(Request $request)
     {
         try {
+            $task = Task::find($request->get('task'));
+
             $user_point = new UserPoint();
-            $user_point->id_task = Task::find($request->get('task'))->id;
+            $user_point->id_task = $task->id;
             $user_point->id_user = $request->get('freshman');
             $user_point->assigned_at = date('Y-m-d H:m:s');
 
@@ -121,7 +123,14 @@ class TaskController extends Controller
             {
                 throw new \Exception('Assign failed.');
             }
-            return redirect()->route('task.tasks')->withStatus(__('Task successfully assigned.'));
+            if ($task->type == config('custom.QUEST_ID'))
+            {
+                return redirect()->route('task.tasks')->withQuestStatus(__('Quest successfully assigned.'));
+            }
+            else
+            {
+                return redirect()->route('task.tasks')->withStatus(__('Task successfully assigned.'));
+            }
         }
         catch (\Exception $e) {
             return back()->withError(__('Task assignation failed.'));

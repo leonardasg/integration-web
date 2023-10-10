@@ -11,7 +11,6 @@
                 <div class="modal-body">
                     @csrf
                     @method('put')
-                    @include('alerts.success')
 
                     <div class="form-group{{ $errors->has('task') ? ' has-danger' : '' }}">
                         <label for="task">{{ __('Task') }}</label>
