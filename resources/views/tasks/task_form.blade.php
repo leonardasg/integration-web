@@ -14,41 +14,44 @@
                     <div class="card-body">
                         @include('alerts.success')
 
+                        <div class="form-group{{ $errors->has('type') ? ' has-danger' : '' }}">
+                            <label for="type">{{ __('Type') }}</label>
+                            <select name="type" class="form-control{{ $errors->has('type') ? ' is-invalid' : '' }}">
+                                @foreach($task_types as $type)
+                                    <option value="{{ $type['id'] }}"
+                                            @if(isset($task) && $task->type == $type['id'] || isset($selected_type) && $selected_type == $type['id']) selected @endif>
+                                        {{ $type['name'] }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @include('alerts.feedback', ['field' => 'type'])
+                        </div>
+
                         <div class="form-group{{ $errors->has('name') ? ' has-danger' : '' }}">
                             <label>{{ __('Name') }}</label>
                             <input type="text" name="name" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" placeholder="{{ __('Create a questionnaire for accreditation') }}" value="{{ old('name', isset($task) ? $task->name : '') }}">
                             @include('alerts.feedback', ['field' => 'name'])
                         </div>
 
-                        <div class="form-group{{ $errors->has('description') ? ' has-danger' : '' }}">
+                        <div id="description" class="form-group{{ $errors->has('description') ? ' has-danger' : '' }}">
                             <label>{{ __('Description') }}</label>
                             <input type="text" name="description" class="form-control{{ $errors->has('description') ? ' is-invalid' : '' }}" placeholder="{{ __('The questionnaire must not be shorter than 10 questions') }}" value="{{ old('description', isset($task) ? $task->description : '') }}">
                             @include('alerts.feedback', ['field' => 'description'])
                         </div>
 
-                        <div class="form-group{{ $errors->has('type') ? ' has-danger' : '' }}">
-                            <label for="type">{{ __('Type') }}</label>
-                            <select name="type" class="form-control{{ $errors->has('type') ? ' is-invalid' : '' }}">
-                                @foreach($task_types as $type)
-                                    <option value="{{$type['id']}}">{{$type['name']}}</option>
-                                @endforeach
-                            </select>
-                            @include('alerts.feedback', ['field' => 'type'])
-                        </div>
-
-                        <div class="form-group{{ $errors->has('points') ? ' has-danger' : '' }}">
+                        <div id="points" class="form-group{{ $errors->has('points') ? ' has-danger' : '' }}">
                             <label>{{ __('Points') }}</label>
-                            <input type="number" name="points" class="form-control{{ $errors->has('points') ? ' is-invalid' : '' }}" placeholder="{{ __('20') }}" value="{{ old('points', isset($task) ? $task->points : '') }}">
+                            <input type="number" name="points" class="form-control{{ $errors->has('points') ? ' is-invalid' : '' }}" value="{{ old('points', isset($task) ? $task->points : 0) }}">
                             @include('alerts.feedback', ['field' => 'points'])
                         </div>
 
-                        <div class="form-group{{ $errors->has('date_from') ? ' has-danger' : '' }}">
+                        <div id="date_from" class="form-group{{ $errors->has('date_from') ? ' has-danger' : '' }}">
                             <label>{{ __('Date From') }}</label>
                             <input type="datetime-local" name="date_from" class="form-control{{ $errors->has('date_from') ? ' is-invalid' : '' }}" value="{{ old('date_from', isset($task) ? $task->date_from : '') }}">
                             @include('alerts.feedback', ['field' => 'date_from'])
                         </div>
 
-                        <div class="form-group{{ $errors->has('date_to') ? ' has-danger' : '' }}">
+                        <div id="date_to" class="form-group{{ $errors->has('date_to') ? ' has-danger' : '' }}">
                             <label>{{ __('Date To') }}</label>
                             <input type="datetime-local" name="date_to" class="form-control{{ $errors->has('date_to') ? ' is-invalid' : '' }}" value="{{ old('date_to', isset($task) ? $task->date_to : '') }}">
                             @include('alerts.feedback', ['field' => 'date_to'])
@@ -73,3 +76,15 @@
         </div>
     </div>
 @endsection
+
+@push('js')
+    <script>
+        window.appConfig = @json([
+            'id_quest' => config('custom.QUEST_ID')
+        ]);
+
+        $(document).ready(function() {
+            custom.initTaskType();
+        });
+    </script>
+@endpush

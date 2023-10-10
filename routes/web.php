@@ -44,6 +44,11 @@ Route::group(['middleware' => ['auth', 'role:member']], function () {
     Route::get('create-task', ['as' => 'task.create', 'uses' => 'App\Http\Controllers\TaskController@create']);
     Route::put('add-task', ['as' => 'task.add', 'uses' => 'App\Http\Controllers\TaskController@add']);
 
+    Route::put('assign-task', ['as' => 'task.assign', 'uses' => 'App\Http\Controllers\TaskController@assign']);
+    Route::put('unassign-task', ['as' => 'task.unassign', 'uses' => 'App\Http\Controllers\TaskController@unassign']);
+
+    Route::put('verify-task', ['as' => 'task.verify', 'uses' => 'App\Http\Controllers\TaskController@verify']);
+
     Route::get('edit-task', ['as' => 'task.edit', 'uses' => 'App\Http\Controllers\TaskController@edit']);
     Route::put('update-task', ['as' => 'task.update', 'uses' => 'App\Http\Controllers\TaskController@update']);
 
@@ -72,6 +77,12 @@ Route::group(['middleware' => ['auth', 'role:admin']], function () {
     Route::put('remove-role', ['as' => 'role.remove', 'uses' => 'App\Http\Controllers\RoleController@remove']);
 });
 
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('freshmen', ['as' => 'freshman.freshmen', 'uses' =>'App\Http\Controllers\FreshmanController@freshmen']);
+    Route::get('freshman-tasks', ['as' => 'freshman.freshman_tasks', 'uses' =>'App\Http\Controllers\FreshmanController@freshman_tasks']);
+});
+
 Route::post('/upload-image', 'App\Http\Controllers\ImageController@upload')->name('uploadImage');
-Route::get('/api/users/calculate-points', 'App\Http\Controllers\UserController@calculatePointsForUser');
+Route::get('/api/freshman/get-points', 'App\Http\Controllers\FreshmanController@getPointsForDisplay');
+Route::post('/api/freshman/finish-task', 'App\Http\Controllers\FreshmanController@finishTask');
 

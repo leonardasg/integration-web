@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TaskRequest;
+use App\Models\Freshman;
+use App\Models\UserPoint;
 use Illuminate\Http\Request;
 use App\Models\Task;
-use App\Models\User;
 
 class TaskController extends Controller
 {
@@ -16,9 +17,12 @@ class TaskController extends Controller
      */
     public function tasks()
     {
-        $tasks = Task::with('user', 'role')->get();
+        $tasks = Task::getTasks(true);
+        $quests = Task::getQuests(true);
 
-        return view('tasks.tasks', ['tasks' => $tasks]);
+        $freshmen = Freshman::getFreshmen();
+
+        return view('tasks.tasks', ['tasks' => $tasks, 'quests' => $quests, 'freshmen' => $freshmen]);
     }
 
     /**
@@ -26,12 +30,13 @@ class TaskController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function create()
+    public function create(Request $request)
     {
         $user = auth()->user();
         $options = $user->getRolesAsOptions();
+        $selected_type = $request->get('selected_type');
 
-        return view('tasks.task_form', ['task_types' => $options]);
+        return view('tasks.task_form', ['task_types' => $options, 'selected_type' => $selected_type]);
     }
 
     /**
@@ -101,6 +106,72 @@ class TaskController extends Controller
         }
         catch (\Exception $e) {
             return back()->withError(__('Task remove failed.'));
+        }
+    }
+
+    public function assign(Request $request)
+    {
+        try {
+            $user_point = new UserPoint();
+            $user_point->id_task = Task::find($request->get('task'))->id;
+            $user_point->id_user = $request->get('freshman');
+            $user_point->assigned_at = date('Y-m-d H:m:s');
+
+            if (!$user_point->save())
+            {
+                throw new \Exception('Assign failed.');
+            }
+            return redirect()->route('task.tasks')->withStatus(__('Task successfully assigned.'));
+        }
+        catch (\Exception $e) {
+            return back()->withError(__('Task assignation failed.'));
+        }
+    }
+
+    public function unassign(Request $request)
+    {
+        try {
+            $id = $request->get('id_user_point');
+
+            if(!UserPoint::find($id)->delete())
+            {
+                throw new \Exception('Unassignation failed.');
+            }
+
+            return back()->withStatus(__('Task successfully unassigned.'));
+        }
+        catch (\Exception $e) {
+            return back()->withError(__('Task unassign failed.'));
+        }
+    }
+
+    public function verify(Request $request)
+    {
+        try {
+            $id = $request->get('id_user_point');
+            $user_point = UserPoint::find($id);
+
+            if (!empty($user_point->verified_at))
+            {
+                return back()->withStatus(__('Task was already verified.'));
+            }
+
+            $date_now = date('Y-m-d H:m:s');
+            if (empty($user_point->finished_at))
+            {
+                $user_point->finished_at = $date_now;
+            }
+            $user_point->verified_at = $date_now;
+
+            if(!$user_point->save())
+            {
+                throw new \Exception('Verification failed.');
+            }
+
+            return back()->withStatus(__('Task successfully verified.'));
+        }
+        catch (\Exception $e) {
+            return back()->withError(__('Task verification failed.'));
         }
     }
 }

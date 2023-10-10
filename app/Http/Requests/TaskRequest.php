@@ -23,8 +23,7 @@ class TaskRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'points' => 'required|numeric|min:0',
+            'points' => 'numeric|min:0',
         ];
     }
 }

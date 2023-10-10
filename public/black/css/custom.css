@@ -101,4 +101,11 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     border-width: thin;
 }
 
+.modal-body select,
+.modal-body select option,
+.modal-body optgroup{
+    color: #222a42;
+    background: initial;
+}
+
 

@@ -26,7 +26,8 @@ demo = {
                         stacked: true,
                         ticks: {
                             min: 0,
-                            max: 1000,
+                            stepSize: 100,
+                            max: 1500,
                         },
                     },
                 ],
@@ -61,21 +62,31 @@ demo = {
 
         var datasets = [];
 
-        axios.get(`/api/users/calculate-points?id_user=${id_user}`)
+        axios.get(`/api/freshman/get-points?id_user=${id_user}`)
             .then(response => {
-                const levelColors = response.data.level_colors;
-                const pointsToNextLevel = response.data.to_next_level;
-                const pointsByLevel = response.data.points_by_level;
-                const totalPoints = response.data.total_points;
+                const allLevels = response.data.all_levels;
+                const freshman_level = response.data.level;
+                const left_points = response.data.left_points;
 
-                var index = 0;
-                pointsByLevel.forEach((points, level) => {
-                    datasets.push({
-                        label: `Level ${level + 1}`,
-                        backgroundColor: levelColors[index],
-                        data: [points],
-                    });
-                    index++;
+                var old_points = 0;
+                allLevels.forEach(levelData => {
+                    const level = levelData.id;
+                    const points = levelData.points;
+
+                    if (level <= freshman_level) {
+                        datasets.push({
+                            label: `Level ${level}`,
+                            backgroundColor: '#e14eca',
+                            data: [points - old_points],
+                        });
+                        old_points = points;
+                    }
+                });
+
+                datasets.push({
+                    label: `Points without level`,
+                    backgroundColor: '#6c757d',
+                    data: [left_points],
                 });
 
                 // Create the chart inside this block
@@ -91,40 +102,6 @@ demo = {
             .catch(error => {
                 console.error('Error fetching user points:', error);
             });
-
-        $("#0").click(function () {
-            var data = datasets.config.data;
-            data.datasets[0].data = chart_data;
-            data.labels = chart_labels;
-            myChartData.update();
-        });
-        $("#1").click(function () {
-            var chart_data = [80, 120, 105, 110, 95, 105, 90, 100, 80, 95, 70, 120];
-            var data = myChartData.config.data;
-            data.datasets[0].data = chart_data;
-            data.labels = chart_labels;
-            myChartData.update();
-        });
-
-        $("#2").click(function () {
-            var chart_data = [60, 80, 65, 130, 80, 105, 90, 130, 70, 115, 60, 130];
-            var data = myChartData.config.data;
-            data.datasets[0].data = chart_data;
-            data.labels = chart_labels;
-            myChartData.update();
-        });
-
-        function getRandomColor() {
-            const letters = "0123456789ABCDEF"; // Hexadecimal digits
-            let color = "#";
-
-            // Generate a random six-character color code
-            for (let i = 0; i < 6; i++) {
-                color += letters[Math.floor(Math.random() * 16)];
-            }
-
-            return color;
-        }
 
     },
 
@@ -152,11 +129,79 @@ custom = {
 
             const checkbox = $(this).find('input[type="checkbox"]');
 
-            if (!checkbox.is(':checked')){
+            if (!checkbox.is(':checked')) {
                 checkbox.prop('checked', true).attr('checked', 'checked');
-            }
-            else {
+            } else {
                 checkbox.prop('checked', false).removeAttr('checked');
+            }
+        });
+    },
+
+    initTaskType: function () {
+        togglePointsInput();
+
+        $('select[name="type"]').on('change', function () {
+            togglePointsInput();
+        });
+
+        function togglePointsInput() {
+            var selectedType = $('select[name="type"]').val();
+            if (selectedType == window.appConfig.id_quest) {
+                $('#points').hide();
+                $('#description').hide();
+                $('#date_from').hide();
+                $('#date_to').hide();
+            } else {
+                $('#points').show();
+                $('#description').show();
+                $('#date_from').show();
+                $('#date_to').show();
+            }
+        }
+    },
+
+    selectTask: function () {
+        $('.dropdown-item[data-target="#assign"]').click(function () {
+            var taskValue = $(this).data('task');
+            $('select[name="task"]').val(taskValue);
+        });
+    },
+
+    finishTask: function () {
+        $('.task-checkbox').change(function () {
+            var isChecked = $(this).is(':checked');
+            var id_user_point = $(this).val();
+
+            if (isChecked) {
+                if (confirm('Are you sure to finish this task?')) {
+                    axios.post('/api/freshman/finish-task', {
+                        id_user_point: id_user_point,
+                        finished: true
+                    })
+                        .then(function (response) {
+                            console.log(response.data);
+                        })
+                        .catch(function (error) {
+                            console.error(error);
+                        });
+                } else {
+                    $(this).prop('checked', false);
+                }
+            } else {
+                if (confirm('Are you sure to mark this task unfinished?')) {
+                    axios.post('/api/freshman/finish-task', {
+                        id_user_point: id_user_point,
+                        finished: false
+                    })
+                        .then(function (response) {
+                            console.log(response.data);
+                        })
+                        .catch(function (error) {
+                            console.error(error);
+                        });
+                } else {
+                    $(this).prop('checked', true);
+                }
             }
         });
     }

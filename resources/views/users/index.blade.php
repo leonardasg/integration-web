@@ -21,8 +21,8 @@
 
                     @include('alerts.success')
 
-                    <div class="table-responsive">
-                        <table class="table tablesorter " id="">
+                    <div>
+                        <table class="table tablesorter">
                             <thead class=" text-primary">
                             <tr>
                                 <th>

@@ -2,13 +2,13 @@
     <div class="container-fluid">
         <ul class="nav">
             <li class="nav-item">
-                <a href="/policy" class="nav-link">
-                    {{ __('Privacy policy') }}
+                <a href="https://youtu.be/xC6MME-RE3g?si=F9d7aNkxBuXvIah0" class="nav-link" target="_blank">
+                    {{ __('FSA SHM anthem') }}
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">
-                    {{ __('Empty page 2') }}
+                <a href="https://www.youtube.com/watch?v=FtGmPtQ9jw0" class="nav-link" target="_blank">
+                    {{ __('KTU SA anthem') }}
                 </a>
             </li>
         </ul>
