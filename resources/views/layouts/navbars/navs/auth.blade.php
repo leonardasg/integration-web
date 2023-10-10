@@ -23,7 +23,7 @@
                             <img src=" @if(!empty(auth()->user()->avatar)) {{ asset('uploads/' . auth()->user()->avatar) }} @else {{ asset('black') }}/img/anime3.png @endif" alt="{{ __('Profile Photo') }}">
                         </div>
                         <b class="caret d-none d-lg-block d-xl-block"></b>
-                        <p class="d-lg-none">{{ __('Log out') }}</p>
+                        <p class="d-lg-none">{{ __('Settings') }}</p>
                     </a>
                     <ul class="dropdown-menu dropdown-navbar">
                         <li class="nav-link">

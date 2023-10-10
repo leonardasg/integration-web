@@ -199,6 +199,19 @@ custom = {
 
             previousState[id_user_point] = isChecked;
     });
+    },
+
+    dropdownItemShow: function () {
+        if (window.screen.width < 769) {
+            $(document).on('shown.bs.dropdown', '.dropdown', function () {
+                var height = $(this).find('.dropdown-menu').height();
+                $(this).closest('.table').css('margin-bottom', height + 'px');
+            });
+
+            $(document).on('hidden.bs.dropdown', '.dropdown', function () {
+                $(this).closest('.table').css('margin-bottom', '');
+            });
+        }
     }
 };
 

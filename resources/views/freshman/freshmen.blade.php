@@ -11,9 +11,9 @@
 
                     @include('alerts.success')
 
-                    <div>
+                    <div class="table-container">
                         <table class="table tablesorter">
-                            <thead class=" text-primary">
+                            <thead class="text-primary">
                                 <tr>
                                     <th></th>
                                     <th>

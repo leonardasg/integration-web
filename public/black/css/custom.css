@@ -112,9 +112,11 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     height: auto !important;
 }
 
-.table-container {
-    overflow-y:hidden;
-    overflow-x:auto
+@media (max-width: 768px) {
+    .table-container {
+        overflow-y:hidden;
+        overflow-x:auto
+    }
 }
 
 

@@ -14,7 +14,7 @@
             </div>
             <div class="card-body">
                 @include('alerts.success')
-                <div class="table-container">
+                <div id="quests" class="table-container">
                     <table class="table tablesorter">
                         <thead class="text-primary">
                         <th>No.</th>
@@ -66,3 +66,12 @@
 </div>
 
 @include('tasks.assign')
+
+@push('js')
+    <script>
+        $(document).ready(function() {
+            // Javascript method's body can be found in assets/js/demos.js
+            custom.test();
+        });
+    </script>
+@endpush
