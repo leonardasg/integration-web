@@ -23,7 +23,7 @@
                 @endif
             </td>
 
-            @if(auth()->user()->getAuthIdentifier() == $task->created_by || auth()->user()->hasRole('admin'))
+            @if(auth()->user()->getAuthIdentifier() == $task->created_by || auth()->user()->hasRole(config('custom.ADMIN')))
                 <td class="text-right">
                     <div class="dropdown">
                         <button type="button" class="btn btn-link dropdown-toggle btn-icon" data-toggle="dropdown">

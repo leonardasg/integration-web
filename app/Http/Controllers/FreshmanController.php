@@ -71,7 +71,11 @@ class FreshmanController extends Controller
         }
 
         $levels = Level::all();
-        $left_points = $freshman->points - $levels[$freshman->level - 1]->points;
+        $left_points = 0;
+        if ($freshman->level > 0)
+        {
+            $left_points = $freshman->points - $levels[$freshman->level - 1]->points;
+        }
 
         return response()->json([
             'all_levels' => Level::all(),

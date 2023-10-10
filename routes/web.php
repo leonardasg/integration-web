@@ -55,7 +55,7 @@ Route::group(['middleware' => ['auth', 'role:member']], function () {
     Route::put('remove-task', ['as' => 'task.remove', 'uses' => 'App\Http\Controllers\TaskController@remove']);
 });
 
-Route::group(['middleware' => ['auth', 'role:admin']], function () {
+Route::group(['middleware' => ['auth', 'role:site-admin']], function () {
     Route::get('create-user', ['as' => 'users.create', 'uses' => 'App\Http\Controllers\UserController@create']);
     Route::put('add-user', ['as' => 'users.add', 'uses' => 'App\Http\Controllers\UserController@add']);
 
@@ -65,7 +65,7 @@ Route::group(['middleware' => ['auth', 'role:admin']], function () {
     Route::put('remove-user', ['as' => 'users.remove', 'uses' => 'App\Http\Controllers\UserController@remove']);
 });
 
-Route::group(['middleware' => ['auth', 'role:admin']], function () {
+Route::group(['middleware' => ['auth', 'role:site-admin']], function () {
     Route::get('roles', ['as' => 'role.index', 'uses' =>'App\Http\Controllers\RoleController@index']);
 
     Route::get('create-role', ['as' => 'role.create', 'uses' => 'App\Http\Controllers\RoleController@create']);

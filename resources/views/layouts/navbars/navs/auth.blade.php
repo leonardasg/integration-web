@@ -20,7 +20,6 @@
                 <li class="dropdown nav-item">
                     <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
                         <div class="photo">
-
                             <img src=" @if(!empty(auth()->user()->avatar)) {{ asset('uploads/' . auth()->user()->avatar) }} @else {{ asset('black') }}/img/anime3.png @endif" alt="{{ __('Profile Photo') }}">
                         </div>
                         <b class="caret d-none d-lg-block d-xl-block"></b>
@@ -29,9 +28,6 @@
                     <ul class="dropdown-menu dropdown-navbar">
                         <li class="nav-link">
                             <a href="{{ route('profile.edit') }}" class="nav-item dropdown-item">{{ __('Profile') }}</a>
-                        </li>
-                        <li class="nav-link">
-                            <a href="#" class="nav-item dropdown-item">{{ __('Settings') }}</a>
                         </li>
                         <li class="dropdown-divider"></li>
                         <li class="nav-link">

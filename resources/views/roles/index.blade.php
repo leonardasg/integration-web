@@ -6,7 +6,7 @@
             <div class="card card-tasks">
                 <div class="card-header">
                     <h4 class="card-title d-inline">All Roles</h4>
-                    @if(auth()->user()->hasRole('admin'))
+                    @if(auth()->user()->hasRole(config('custom.ADMIN')))
                         <div class="dropdown">
                             <button type="button" class="btn btn-link dropdown-toggle btn-icon" data-toggle="dropdown">
                                 <i class="tim-icons icon-settings-gear-63"></i>
@@ -38,7 +38,7 @@
                                     <tr>
                                         <td>{{ $role->name }}</td>
                                         <td>@if($role->as_type) <span class="tim-icons green icon-check-2"></span> @else <span class="tim-icons red icon-simple-remove"></span> @endif</td>
-                                        <td>
+                                        <td class="text-right">
                                             <div class="dropdown">
                                                 <button type="button" class="btn btn-link dropdown-toggle btn-icon" data-toggle="dropdown">
                                                     <i class="tim-icons icon-pencil"></i>

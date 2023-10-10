@@ -6,7 +6,7 @@
             <div class="card ">
                 <div class="flex-row card-header">
                     <h4 class="card-title">All Users</h4>
-                    @if(auth()->user()->hasRole('admin'))
+                    @if(auth()->user()->hasRole(config('custom.ADMIN')))
                         <div class="dropdown">
                             <button type="button" class="btn btn-link dropdown-toggle btn-icon" data-toggle="dropdown">
                                 <i class="tim-icons icon-settings-gear-63"></i>
@@ -25,24 +25,24 @@
                         <table class="table tablesorter">
                             <thead class=" text-primary">
                             <tr>
-                                <th>
-                                    Name
-                                </th>
-                                <th>
-                                    Email
-                                </th>
-                                <th>
-                                    Roles
-                                </th>
+                                <th></th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Roles</th>
                             </tr>
                             </thead>
                             <tbody>
                                 @foreach($users as $user)
                                     <tr>
+                                        <td>
+                                            <div class="photo">
+                                                <img src=" @if(!empty($user->avatar)) {{ asset('uploads/' . $user->avatar) }} @else {{ asset('black') }}/img/anime3.png @endif" alt="{{ __('Profile Photo') }}">
+                                            </div>
+                                        </td>
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->email }}</td>
                                         <td>{{ $user->roles }}</td>
-                                        @if(auth()->user()->hasRole('admin'))
+                                        @if(auth()->user()->hasRole(config('custom.ADMIN')))
                                             <td>
                                                 <div class="dropdown">
                                                     <button type="button" class="btn btn-link dropdown-toggle btn-icon" data-toggle="dropdown">

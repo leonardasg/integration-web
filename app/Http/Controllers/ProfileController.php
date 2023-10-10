@@ -52,11 +52,15 @@ class ProfileController extends Controller
 
         $imageName = $imageController->upload($request, 'user' . $user->id . '-avatar');
 
-        if (empty($imageName)) {
+        if (empty($imageName))
+        {
             return back()->with('avatar_error', 'Avatar upload failed.');
         }
 
-        $imageController->delete($user->avatar);
+        if (isset($user->avatar))
+        {
+            $imageController->delete($user->avatar);
+        }
 
         $user->avatar = $imageName;
         $user->save();

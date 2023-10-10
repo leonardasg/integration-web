@@ -14,24 +14,30 @@
                     <div>
                         <table class="table tablesorter">
                             <thead class=" text-primary">
-                            <tr>
-                                <th>
-                                    Name
-                                </th>
-                                <th class="text-center">
-                                    Points
-                                </th>
-                                <th class="text-center">
-                                    Level
-                                </th>
-                                <th class="text-right">
-                                    More
-                                </th>
-                            </tr>
+                                <tr>
+                                    <th></th>
+                                    <th>
+                                        Name
+                                    </th>
+                                    <th class="text-center">
+                                        Points
+                                    </th>
+                                    <th class="text-center">
+                                        Level
+                                    </th>
+                                    <th class="text-right">
+                                        More
+                                    </th>
+                                </tr>
                             </thead>
                             <tbody>
                                 @foreach($freshmen as $freshman)
                                     <tr>
+                                        <td>
+                                            <div class="photo">
+                                                <img src=" @if(!empty($freshman->user->avatar)) {{ asset('uploads/' . $freshman->user->avatar) }} @else {{ asset('black') }}/img/anime3.png @endif" alt="{{ __('Profile Photo') }}">
+                                            </div>
+                                        </td>
                                         <td>{{ $freshman->user->name }}</td>
                                         <td class="text-center">{{ $freshman->points }}</td>
                                         <td class="text-center">{{ $freshman->level }}</td>

@@ -108,4 +108,8 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     background: initial;
 }
 
+.card-tasks {
+    height: auto !important;
+}
+
 

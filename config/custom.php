@@ -2,5 +2,5 @@
 
 return [
     'QUEST_ID' => 12,
-    'ADMIN' => 'admin'
+    'ADMIN' => 'site-admin'
 ];

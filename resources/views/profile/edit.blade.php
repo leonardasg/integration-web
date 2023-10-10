@@ -101,7 +101,7 @@
                             <div class="block block-three"></div>
                             <div class="block block-four"></div>
                             <a href="#">
-                                <img class="avatar" src="{{ asset('uploads/' . auth()->user()->avatar) }}" alt="">
+                                <img style="width: 124px;" class="avatar" src="{{ asset('uploads/' . auth()->user()->avatar) }}" alt="">
                                 <h5 class="title">{{ auth()->user()->name }}</h5>
                             </a>
 
