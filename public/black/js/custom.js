@@ -151,11 +151,13 @@ custom = {
                 $('#description').hide();
                 $('#date_from').hide();
                 $('#date_to').hide();
+                $('#active').hide();
             } else {
                 $('#points').show();
                 $('#description').show();
                 $('#date_from').show();
                 $('#date_to').show();
+                $('#active').show();
             }
         }
     },
@@ -168,15 +170,21 @@ custom = {
     },
 
     finishTask: function () {
+        var previousState = {};
+
         $('.task-checkbox').change(function () {
             var isChecked = $(this).is(':checked');
             var id_user_point = $(this).val();
 
-            if (isChecked) {
-                if (confirm('Are you sure to finish this task?')) {
+            if (isChecked !== previousState[id_user_point]) {
+                var confirmationMessage = isChecked
+                    ? 'Are you sure to finish this task?'
+                    : 'Are you sure to mark this task unfinished?';
+
+                if (confirm(confirmationMessage)) {
                     axios.post('/api/freshman/finish-task', {
                         id_user_point: id_user_point,
-                        finished: true
+                        finished: isChecked
                     })
                         .then(function (response) {
                             console.log(response.data);
@@ -185,25 +193,12 @@ custom = {
                             console.error(error);
                         });
                 } else {
-                    $(this).prop('checked', false);
-                }
-            } else {
-                if (confirm('Are you sure to mark this task unfinished?')) {
-                    axios.post('/api/freshman/finish-task', {
-                        id_user_point: id_user_point,
-                        finished: false
-                    })
-                        .then(function (response) {
-                            console.log(response.data);
-                        })
-                        .catch(function (error) {
-                            console.error(error);
-                        });
-                } else {
-                    $(this).prop('checked', true);
+                    $(this).prop('checked', previousState[id_user_point]);
                 }
             }
-        });
+
+            previousState[id_user_point] = isChecked;
+    });
     }
 };
 

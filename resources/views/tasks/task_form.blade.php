@@ -58,11 +58,11 @@
                         </div>
 
                         @if(auth()->user()->hasRole(config('custom.ADMIN')))
-                            <div class="form-group{{ $errors->has('active') ? ' has-danger' : '' }}">
+                            <div id="active" class="form-group{{ $errors->has('active') ? ' has-danger' : '' }}">
                                 <label for="active">{{ __('Active') }}</label>
                                 <select name="active" class="form-control{{ $errors->has('active') ? ' is-invalid' : '' }}">
-                                    <option value="0">False</option>
-                                    <option value="1">True</option>
+                                    <option value="0" @if(isset($task) && !$task->active) selected @endif>False</option>
+                                    <option value="1" @if(isset($task) && $task->active) selected @endif>True</option>
                                 </select>
                                 @include('alerts.feedback', ['field' => 'active'])
                             </div>

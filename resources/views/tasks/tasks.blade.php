@@ -79,8 +79,9 @@
                                                                 <input type="hidden" name="id_task" value={{ $task->id }}>
                                                                 <button class="dropdown-item red" type="submit">Remove</button>
                                                             </form>
-
-                                                            <a class="dropdown-item green" href="#" data-toggle="modal" data-target="#assign" data-task="{{$task->id}}">Assign freshman</a>
+                                                            @if($task->active)
+                                                                <a class="dropdown-item green" href="#" data-toggle="modal" data-target="#assign" data-task="{{$task->id}}">Assign freshman</a>
+                                                            @endif
                                                         </div>
                                                     </div>
                                                 </td>

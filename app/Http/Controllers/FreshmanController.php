@@ -29,36 +29,6 @@ class FreshmanController extends Controller
         return view('tasks.freshman_tasks', ['tasks' => $tasks, 'freshman' => $freshman, 'quests' => $quests, 'freshmen' => $freshmen]);
     }
 
-    public function getPointsasForDisplay()
-    {
-        $id_user = request('id_user');
-        $user = User::find($id_user);
-        $freshman = new Freshman($user);
-
-        if (!$freshman)
-        {
-            return response()->json(['message' => 'Freshman not found'], 404);
-        }
-
-        $points_cp = $freshman->points;
-        $by_level = [];
-        $points_to_next_level = config('custom.POINTS_TO_NEXT_LEVEL');
-        while ($points_cp > $points_to_next_level)
-        {
-            $by_level[] = $points_to_next_level;
-            $points_cp -= $points_to_next_level;
-        }
-        $by_level[] = $points_cp;
-
-        $level_colors = config('custom.LEVEL_COLORS');
-        return response()->json([
-            'level_colors' => $level_colors,
-            'to_next_level' => $points_to_next_level,
-            'total_points' => $freshman->points,
-            'points_by_level' => $by_level
-        ]);
-    }
-
     public function getPointsForDisplay()
     {
         $id_user = request('id_user');
@@ -75,6 +45,10 @@ class FreshmanController extends Controller
         if ($freshman->level > 0)
         {
             $left_points = $freshman->points - $levels[$freshman->level - 1]->points;
+        }
+        else
+        {
+            $left_points = $freshman->points;
         }
 
         return response()->json([
