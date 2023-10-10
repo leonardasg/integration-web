@@ -10,7 +10,7 @@
             </div>
             <div class="card-body">
                 @include('alerts.success')
-                <div>
+                <div class="table-container">
                     <table class="table">
                         <thead class=" text-primary">
                         <th>

@@ -1,8 +1,8 @@
 <div class="row">
     <div class="col-md-12">
         <div class="card">
-            <div class="flex-row card-header card-header-primary">
-                <h4 class="card-title d-inline">Quests List</h4>
+            <div class="flex-row card-header">
+                <h4 class="card-title">Quests List</h4>
                 <div class="dropdown">
                     <button type="button" class="btn btn-link dropdown-toggle btn-icon" data-toggle="dropdown">
                         <i class="tim-icons icon-settings-gear-63"></i>
@@ -14,9 +14,9 @@
             </div>
             <div class="card-body">
                 @include('alerts.success')
-                <div>
-                    <table class="table">
-                        <thead class=" text-primary">
+                <div class="table-container">
+                    <table class="table tablesorter">
+                        <thead class="text-primary">
                         <th>No.</th>
                         <th>Name</th>
                         </thead>

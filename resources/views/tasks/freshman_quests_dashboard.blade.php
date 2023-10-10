@@ -3,7 +3,7 @@
         <h6 class="title">Quests</h6>
     </div>
     <div class="card-body">
-        <div class="table-full-width">
+        <div class="table-full-width table-container">
             <table class="table">
                 <tbody>
                 @if(!empty($quests))
