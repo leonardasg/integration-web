@@ -34,16 +34,27 @@
                     </div>
 
                     <div class="form-group{{ $errors->has('freshman') ? ' has-danger' : '' }}">
-                        <label for="freshman">{{ __('Freshman') }}</label>
-                        <select name="freshman" class="form-control{{ $errors->has('freshman') ? ' is-invalid' : '' }}">
-                            @foreach($freshmen as $freshman)
-                                <option value="{{ $freshman->user->id }}">
-                                    {{ $freshman->user->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @include('alerts.feedback', ['field' => 'freshman'])
+                        <label>{{ __('Freshman') }}</label>
+                        @foreach($freshmen as $freshman)
+                            <div id="freshman-checkbox-{{ $freshman->user->id }}" class="freshman-checkbox">
+                                <input type="checkbox" name="freshman[]" value="{{ $freshman->user->id }}"
+{{--                                    {{ isset($freshman) && in_array($freshman->id, $freshman->freshman->pluck('id')->toArray()) ? 'checked' : '' }}--}}
+                                >
+                                <span>{{ $freshman->user->name }}</span>
+                            </div>
+                        @endforeach
                     </div>
+{{--                    <div class="form-group{{ $errors->has('freshman') ? ' has-danger' : '' }}">--}}
+{{--                        <label for="freshman">{{ __('Freshman') }}</label>--}}
+{{--                        <select name="freshman" class="form-control{{ $errors->has('freshman') ? ' is-invalid' : '' }}">--}}
+{{--                            @foreach($freshmen as $freshman)--}}
+{{--                                <option value="{{ $freshman->user->id }}">--}}
+{{--                                    {{ $freshman->user->name }}--}}
+{{--                                </option>--}}
+{{--                            @endforeach--}}
+{{--                        </select>--}}
+{{--                        @include('alerts.feedback', ['field' => 'freshman'])--}}
+{{--                    </div>--}}
 
                 </div>
                 <div class="modal-footer">
@@ -59,6 +70,7 @@
     <script>
         $(document).ready(function() {
             custom.selectTask();
+            custom.initMultipleSelection();
         });
     </script>
 @endpush

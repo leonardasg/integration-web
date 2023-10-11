@@ -26,7 +26,8 @@
     cursor: pointer;
 }
 
-.role-checkbox span {
+.role-checkbox span,
+.freshman-checkbox span{
     position: relative;
     padding-left: 30px;
     cursor: pointer;
@@ -35,7 +36,12 @@
     color: rgba(255, 255, 255, 0.8);
 }
 
-.role-checkbox input[type="checkbox"] {
+.freshman-checkbox span {
+    color: #525f7f;
+}
+
+.role-checkbox input[type="checkbox"],
+.freshman-checkbox input[type="checkbox"]{
     left: 0;
     top: 0;
     opacity: 0; /* Hide the default checkbox */
@@ -43,7 +49,8 @@
 }
 
 /* Style the custom checkbox */
-.role-checkbox input[type="checkbox"] + span::after {
+.role-checkbox input[type="checkbox"] + span::after,
+.freshman-checkbox input[type="checkbox"] + span::after{
     content: "";
     position: absolute;
     left: 0;
@@ -55,7 +62,8 @@
     border-radius: 5px;
 }
 
-.role-checkbox input[type="checkbox"]:checked + span::after {
+.role-checkbox input[type="checkbox"]:checked + span::after,
+.freshman-checkbox input[type="checkbox"]:checked + span::after{
     background-color: #e14eca;;
 }
 

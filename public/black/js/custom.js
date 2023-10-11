@@ -125,7 +125,7 @@ demo = {
 
 custom = {
     initMultipleSelection: function () {
-        $('body').unbind('click').bind('click').on('click', '[id^="role-checkbox-"]', function () {
+        $('body').unbind('click').bind('click').on('click', '[id^="role-checkbox-"], [id^="freshman-checkbox-"]', function () {
 
             const checkbox = $(this).find('input[type="checkbox"]');
 

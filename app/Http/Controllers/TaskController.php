@@ -114,14 +114,16 @@ class TaskController extends Controller
         try {
             $task = Task::find($request->get('task'));
 
-            $user_point = new UserPoint();
-            $user_point->id_task = $task->id;
-            $user_point->id_user = $request->get('freshman');
-            $user_point->assigned_at = date('Y-m-d H:m:s');
-
-            if (!$user_point->save())
+            foreach ($request->get('freshman') as $freshman_id)
             {
-                throw new \Exception('Assign failed.');
+                $user_point = new UserPoint();
+                $user_point->id_task = $task->id;
+                $user_point->id_user = $freshman_id;
+                $user_point->assigned_at = date('Y-m-d H:m:s');
+
+                if (!$user_point->save()) {
+                    throw new \Exception('Assign failed.');
+                }
             }
             if ($task->type == config('custom.QUEST_ID'))
             {
