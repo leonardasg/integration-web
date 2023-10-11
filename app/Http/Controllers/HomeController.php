@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Freshman;
-use App\Models\User;
+use App\Models\Level;
 
 class HomeController extends Controller
 {
@@ -30,8 +30,14 @@ class HomeController extends Controller
             $freshman = new Freshman($user);
             $tasks = $freshman->getTasks(false);
             $quests = $freshman->getQuests(false);
+            $levels = Level::all();
 
-            return view('dashboard', ['tasks' => $tasks, 'freshman' => $freshman, 'quests' => $quests]);
+            return view('dashboard', [
+                'tasks' => $tasks,
+                'freshman' => $freshman,
+                'quests' => $quests,
+                'levels' => $levels,
+            ]);
         }
 
         return view('dashboard');

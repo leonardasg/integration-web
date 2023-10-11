@@ -28,8 +28,12 @@
         </div>
 
         <div class="row">
-            <div class="col-lg-12 col-md-12">
+            <div class="col-xl-9 col-lg-6 col-md-6">
                 @include('tasks.freshman_quests_dashboard')
+            </div>
+
+            <div class="col-xl-3 col-lg-6 col-md-6">
+                @include('tasks.levels')
             </div>
         </div>
     @elseif(auth()->user()->hasRole('member'))

@@ -8,6 +8,4 @@ class Level extends Model
 {
     protected $table = 'levels';
     protected $fillable = ['privilege', 'points', 'locked'];
-
-
 }
