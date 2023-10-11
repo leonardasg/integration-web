@@ -21,7 +21,7 @@ class UserController extends Controller
      */
     public function index(User $model)
     {
-        $users = $model->paginate(15);
+        $users = User::all();
 
         foreach ($users as $user)
         {
