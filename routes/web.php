@@ -85,4 +85,5 @@ Route::group(['middleware' => 'auth'], function () {
 Route::post('/upload-image', 'App\Http\Controllers\ImageController@upload')->name('uploadImage');
 Route::get('/api/freshman/get-points', 'App\Http\Controllers\FreshmanController@getPointsForDisplay');
 Route::post('/api/freshman/finish-task', 'App\Http\Controllers\FreshmanController@finishTask');
+Route::get('/api/task/get-assigned', 'App\Http\Controllers\TaskController@getAssignedFreshmen');
 

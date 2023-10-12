@@ -166,6 +166,18 @@ custom = {
         $('.dropdown-item[data-target="#assign"]').click(function () {
             var taskValue = $(this).data('task');
             $('select[name="task"]').val(taskValue);
+
+            axios.get(`/api/task/get-assigned?id_task=${taskValue}`)
+                .then(response => {
+                    const assigned = response.data.assigned;
+
+                    assigned.forEach(freshman => {
+                        $('input[type="checkbox"][name="freshman[]"][value="' + freshman.id_user + '"]').prop('checked', true);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching task assigned freshmen:', error);
+                });
         });
     },
 
@@ -238,5 +250,33 @@ custom = {
             })
         });
     },
+
+    hideShowTableRows: function () {
+        $('.show-more').click(function() {
+            var tableId = $(this).data('toggle');
+            var $table = $('#table-' + tableId);
+
+            var $hiddenRows = $table.find('.hide-row');
+            var $showMore = $table.find('.show-more-row');
+            var $showLess = $table.find('.show-less-row');
+
+            $hiddenRows.css('display', 'table-row');
+            $showMore.css('display', 'none');
+            $showLess.css('display', 'table-row');
+        });
+
+        $('.show-less').click(function() {
+            var tableId = $(this).data('toggle');
+            var $table = $('#table-' + tableId);
+
+            var $hiddenRows = $table.find('.hide-row');
+            var $showMore = $table.find('.show-more-row');
+            var $showLess = $table.find('.show-less-row');
+
+            $hiddenRows.css('display', 'none');
+            $showMore.css('display', 'table-row');
+            $showLess.css('display', 'none');
+        });
+    }
 };
 

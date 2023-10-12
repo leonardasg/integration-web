@@ -6,7 +6,7 @@
             <div class="card card-tasks">
                 <div class="card-header">
                     <h4 class="card-title d-inline">All Roles</h4>
-                    @if(auth()->user()->hasRole(config('custom.ADMIN')))
+                    @if(auth()->user()->isAdmin())
                         <div class="dropdown">
                             <button type="button" class="btn btn-link dropdown-toggle btn-icon" data-toggle="dropdown">
                                 <i class="tim-icons icon-settings-gear-63"></i>

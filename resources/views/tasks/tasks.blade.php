@@ -61,7 +61,7 @@
                                         @endif
                                     </td>
                                     <td class="@if (auth()->user()->getAuthIdentifier() == $task->created_by) purple @endif">{{ $task->user->name }}</td>
-                                    @if (auth()->user()->getAuthIdentifier() == $task->created_by || auth()->user()->hasRole(config('custom.ADMIN')))
+                                    @if (auth()->user()->canEditTask($task))
                                         <td class="text-right">
                                             <div class="dropdown">
                                                 <button type="button" class="btn btn-link dropdown-toggle btn-icon"
@@ -81,9 +81,7 @@
                                                         <button class="dropdown-item red confirm-form" type="submit" data-confirm="Are you sure you want to remove this task?">Remove</button>
                                                     </form>
                                                     @if($task->active)
-                                                        <a class="dropdown-item green" href="#" data-toggle="modal"
-                                                           data-target="#assign" data-task="{{$task->id}}">Assign
-                                                            freshman</a>
+                                                        <a class="dropdown-item green" href="#" data-toggle="modal" data-target="#assign" data-task="{{$task->id}}">Assign freshman</a>
                                                     @endif
                                                 </div>
                                             </div>

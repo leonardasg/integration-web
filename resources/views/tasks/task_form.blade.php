@@ -1,7 +1,7 @@
 @extends('layouts.app', ['page' => __('Task'), 'pageSlug' => 'task'])
 
 @section('content')
-    @if($task->created_by == auth()->user()->getAuthIdentifier())
+    @if(!isset($task) || auth()->user()->canEditTask($task))
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
@@ -58,7 +58,7 @@
                                 @include('alerts.feedback', ['field' => 'date_to'])
                             </div>
 
-                            @if(auth()->user()->hasRole(config('custom.ADMIN')) || auth()->user()->hasRole('coordinator'))
+                            @if(auth()->user()->isAdmin() || auth()->user()->isCoordinator($task->type ?? null))
                                 <div id="active" class="form-group{{ $errors->has('active') ? ' has-danger' : '' }}">
                                     <label for="active">{{ __('Active') }}</label>
                                     <select name="active" class="form-control{{ $errors->has('active') ? ' is-invalid' : '' }}">

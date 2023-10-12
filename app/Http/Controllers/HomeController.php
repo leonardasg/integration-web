@@ -24,7 +24,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        if (auth()->user()->hasRole('freshman'))
+        if (auth()->user()->isFreshman())
         {
             $user = auth()->user();
             $freshman = new Freshman($user);

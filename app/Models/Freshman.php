@@ -15,7 +15,7 @@ class Freshman extends Model
 
     public function __construct(User $user)
     {
-        if (!$user->hasRole('freshman'))
+        if (!$user->isFreshman())
         {
             return false;
         }
@@ -36,7 +36,7 @@ class Freshman extends Model
         $freshmen = [];
         foreach (User::all() as $user)
         {
-            if ($user->hasRole('freshman'))
+            if ($user->isFreshman())
             {
                 $freshmen[] = new Freshman($user);
             }

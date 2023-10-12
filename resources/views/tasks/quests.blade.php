@@ -25,7 +25,7 @@
                                 <td>{{$loop->index + 1}}</td>
                                 <td>{{ $task->name }}</td>
 
-                                @if(auth()->user()->hasRole('member') || auth()->user()->hasRole(config('custom.ADMIN')))
+                                @if(auth()->user()->isMember() || auth()->user()->isAdmin())
                                     <td class="text-right">
                                         <div class="dropdown">
                                             <button type="button" class="btn btn-link dropdown-toggle btn-icon" data-toggle="dropdown">

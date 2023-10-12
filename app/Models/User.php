@@ -52,6 +52,37 @@ class User extends Authenticatable
         return $this->roles()->where('name', $role)->exists();
     }
 
+    public function isAdmin()
+    {
+        return $this->hasRole('site-admin');
+    }
+
+    public function isMember()
+    {
+        return $this->hasRole('member');
+    }
+
+    public function isFreshman()
+    {
+        return $this->hasRole('freshman');
+    }
+
+    public function isCoordinator($type = null)
+    {
+        if (!$this->hasRole('coordinator'))
+        {
+            return false;
+        }
+
+        if (!isset($type))
+        {
+            return true;
+        }
+
+        $role = Role::where('id', $type)->get()->first()->getAttributes()['name'];
+        return $this->hasRole($role);
+    }
+
     public function getRoles($role = null)
     {
         if (isset($role))
@@ -119,7 +150,7 @@ class User extends Authenticatable
     public function getRolesAsType()
     {
         $roles = [];
-		if (auth()->user()->hasRole(config('custom.ADMIN')))
+		if (auth()->user()->isAdmin())
 		{
 			foreach (Role::where('as_type', true)->get() as $role)
 			{
@@ -133,5 +164,24 @@ class User extends Authenticatable
             $roles[] = $role->getAttributes();
         }
         return $roles;
+    }
+
+    public function canVerify($task)
+    {
+        return (
+            $this->isAdmin() ||
+            $this->isCoordinator($task->type) ||
+            $this->id == $task->created_by ||
+            $task->type == config('custom.QUEST_ID')
+        );
+    }
+
+    public function canEditTask($task)
+    {
+        return (
+            $task->created_by == auth()->user()->getAuthIdentifier() ||
+            auth()->user()->isAdmin() ||
+            auth()->user()->isCoordinator($task->type)
+        );
     }
 }

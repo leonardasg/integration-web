@@ -6,7 +6,7 @@
             <div class="card ">
                 <div class="flex-row card-header">
                     <h4 class="card-title">All Users</h4>
-                    @if(auth()->user()->hasRole(config('custom.ADMIN')))
+                    @if(auth()->user()->isAdmin())
                         <div class="dropdown">
                             <button type="button" class="btn btn-link dropdown-toggle btn-icon" data-toggle="dropdown">
                                 <i class="tim-icons icon-settings-gear-63"></i>
@@ -42,7 +42,7 @@
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->email }}</td>
                                         <td>{{ $user->roles }}</td>
-                                        @if(auth()->user()->hasRole(config('custom.ADMIN')))
+                                        @if(auth()->user()->isAdmin())
                                             <td>
                                                 <div class="dropdown">
                                                     <button type="button" class="btn btn-link dropdown-toggle btn-icon" data-toggle="dropdown">

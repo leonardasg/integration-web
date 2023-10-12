@@ -1,7 +1,7 @@
 @extends('layouts.app', ['pageSlug' => 'dashboard'])
 
 @section('content')
-    @if(auth()->user()->hasRole('freshman'))
+    @if(auth()->user()->isFreshman())
         <div class="row">
             <div class="col-12">
                 <div class="card card-chart">
@@ -36,7 +36,7 @@
                 @include('tasks.levels')
             </div>
         </div>
-    @elseif(auth()->user()->hasRole('member'))
+    @elseif(auth()->user()->isMember())
         <div class="text-center">
             <h1  class="purple">Sveikas, nary!</h1>
             <h3 class="purple">Čia sudėsiu vėliau tavo sukurtus task'us. Dabar viską gali pasiekt per šoninius tab'us!</h3>

@@ -113,18 +113,36 @@ class TaskController extends Controller
     {
         try {
             $task = Task::find($request->get('task'));
+            $freshmen = $request->get('freshman');
 
-            foreach ($request->get('freshman') as $freshman_id)
+            $assigned_before = UserPoint::where('id_task', $task->id)->get();
+            $return = $this->unassignUnchecked($task, $assigned_before, $freshmen);
+            if (!empty($return))
             {
+                return $return;
+            }
+
+            foreach ($freshmen as $freshman_id)
+            {
+                // skip if already assigned
+                $already_assigned = UserPoint::get()->where('id_user', $freshman_id)->where('id_task', $task->id)->all();
+                if (!empty($already_assigned))
+                {
+                    continue;
+                }
+
+                // assign new freshman
                 $user_point = new UserPoint();
                 $user_point->id_task = $task->id;
                 $user_point->id_user = $freshman_id;
                 $user_point->assigned_at = date('Y-m-d H:m:s');
 
-                if (!$user_point->save()) {
+                if (!$user_point->save())
+                {
                     throw new \Exception('Assign failed.');
                 }
             }
+
             if ($task->type == config('custom.QUEST_ID'))
             {
                 return redirect()->route('task.tasks')->withQuestStatus(__('Quest successfully assigned.'));
@@ -137,6 +155,38 @@ class TaskController extends Controller
         catch (\Exception $e) {
             return back()->withError(__('Task assignation failed.'));
         }
+    }
+
+    public function unassignUnchecked($task, $assigned_before, $assigned_new)
+    {
+        // remove all
+        if (empty($assigned_new))
+        {
+            $assigned_before->each(function ($user_point)
+            {
+                $user_point->delete();
+            });
+
+            if ($task->type == config('custom.QUEST_ID'))
+            {
+                return redirect()->route('task.tasks')->withQuestStatus(__('Quest successfully unassigned.'));
+            }
+            else
+            {
+                return redirect()->route('task.tasks')->withStatus(__('Task successfully unassigned.'));
+            }
+        }
+
+        // remove who are unchecked
+        $assigned_before->each(function ($user_point) use ($assigned_new)
+        {
+            if (!in_array($user_point->id_user, $assigned_new))
+            {
+                $user_point->delete();
+            }
+        });
+
+        return false;
     }
 
     public function unassign(Request $request)
@@ -162,6 +212,12 @@ class TaskController extends Controller
             $id = $request->get('id_user_point');
             $user_point = UserPoint::find($id);
 
+            $task = Task::find($user_point->id_task);
+            if (!auth()->user()->canVerify($task))
+            {
+                return back()->withError(__('You do not have permissions to verify this task.'));
+            }
+
             if (!empty($user_point->verified_at))
             {
                 return back()->withStatus(__('Task was already verified.'));
@@ -184,5 +240,21 @@ class TaskController extends Controller
         catch (\Exception $e) {
             return back()->withError(__('Task verification failed.'));
         }
+    }
+
+    public function getAssignedFreshmen()
+    {
+        $id_task = request('id_task');
+        $task = Task::find($id_task);
+        $assigned = $task->getAssigned();
+
+        if (empty($assigned))
+        {
+            return response()->json(['message' => 'No assigned'], 404);
+        }
+
+        return response()->json([
+            'assigned' => $assigned,
+        ]);
     }
 }

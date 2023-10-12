@@ -16,7 +16,7 @@
                 </a>
             </li>
 
-            @if (auth()->user()->hasRole(config('custom.ADMIN')))
+            @if (auth()->user()->isAdmin())
                 <li>
                     <a data-toggle="collapse" href="#admin" aria-expanded="true">
                         <i class="fab fa-laravel"></i>
@@ -62,7 +62,7 @@
                 </li>
             @endif
 
-            @if (auth()->user()->hasRole('member') || auth()->user()->hasRole(config('custom.ADMIN')))
+            @if (auth()->user()->isMember() || auth()->user()->isAdmin())
                 <li>
                     <a data-toggle="collapse" href="#member" aria-expanded="true">
                         <i class="fab fa-laravel"></i>
