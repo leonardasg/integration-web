@@ -83,6 +83,11 @@ class User extends Authenticatable
         return $this->hasRole($role);
     }
 
+    public function isZIKCoordinator()
+    {
+        return $this->isCoordinator(config('custom.ZIK_ID'));
+    }
+
     public function getRoles($role = null)
     {
         if (isset($role))
@@ -143,6 +148,13 @@ class User extends Authenticatable
             'id' => config('custom.QUEST_ID'),
             'name' => 'QUEST',
         ];
+        if (auth()->user()->isZIKCoordinator())
+        {
+            $options[] = [
+                'id' => config('custom.MENTOR_ID'),
+                'name' => 'MENTORING',
+            ];
+        }
 
         return $options;
     }
