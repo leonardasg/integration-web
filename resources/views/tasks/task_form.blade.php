@@ -12,8 +12,6 @@
                         @csrf
                         @method('put')
 
-                        <input type="hidden" name="from" value="{{ $from }}">
-
                         <div class="card-body">
                             @include('alerts.success')
 

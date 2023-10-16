@@ -131,8 +131,16 @@ custom = {
 
             if (!checkbox.is(':checked')) {
                 checkbox.prop('checked', true).attr('checked', 'checked');
+                if ($(this).is('#freshman-checkbox-all')) {
+                    $('[id^="freshman-checkbox-"] input[type="checkbox"]').prop('checked', true);
+                }
             } else {
                 checkbox.prop('checked', false).removeAttr('checked');
+                if ($(this).is('#freshman-checkbox-all')) {
+                    $('[id^="freshman-checkbox-"] input[type="checkbox"]').prop('checked', false);
+                } else {
+                    $('[id^="freshman-checkbox-all"] input[type="checkbox"]').prop('checked', false);
+                }
             }
         });
     },
@@ -165,15 +173,23 @@ custom = {
     selectTask: function () {
         $('.dropdown-item[data-target="#assign"]').click(function () {
             var taskValue = $(this).data('task');
-            $('select[name="task"]').val(taskValue);
+            var $select = $('select[name="task"]');
+
+            $select.val(taskValue);
+            $select.find('option:not(:selected)').prop('disabled', true);
 
             axios.get(`/api/task/get-assigned?id_task=${taskValue}`)
                 .then(response => {
                     const assigned = response.data.assigned;
+                    const all = response.data.all;
 
                     assigned.forEach(freshman => {
                         $('input[type="checkbox"][name="freshman[]"][value="' + freshman.id_user + '"]').prop('checked', true);
                     });
+
+                    if (all) {
+                        $('input[type="checkbox"][name="freshman[]"][value="all"]').prop('checked', true);
+                    }
                 })
                 .catch(error => {
                     console.error('Error fetching task assigned freshmen:', error);
@@ -276,6 +292,22 @@ custom = {
             $hiddenRows.css('display', 'none');
             $showMore.css('display', 'table-row');
             $showLess.css('display', 'none');
+        });
+    },
+
+    hideTasksByType: function () {
+        $('tr[data-id-type]').hide();
+
+        $('tr.tasks-type').off().click(function() {
+            var typeId = $(this).attr('id').replace('tasks-', ''); // Extract the id
+            var $targetRows = $('tr[data-id-type="' + typeId + '"]');
+            var $showMoreBtn = $(this).find('.show-more');
+            var $showLessBtn = $(this).find('.show-less');
+
+            // Toggle visibility of the target rows
+            $targetRows.toggle();
+            $showMoreBtn.toggle();
+            $showLessBtn.toggle();
         });
     }
 };

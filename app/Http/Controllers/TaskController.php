@@ -76,7 +76,7 @@ class TaskController extends Controller
                 throw new \Exception('Add failed.');
             }
 
-            return redirect()->route('tasks.tasks')->withStatus(__('Task successfully added.'));
+            return redirect()->back()->withStatus(__('Task successfully added.'));
         }
         catch (\Exception $e) {
             return back()->withError(__('Task add failed.'));

@@ -116,6 +116,10 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     background: initial;
 }
 
+.modal-body select option:disabled{
+    font-weight: 200;
+}
+
 .card-tasks {
     height: auto !important;
 }
@@ -144,6 +148,26 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 
 .show-more-less .btn .tim-icons:hover {
     color: #e14eca;
+}
+
+.tasks-type {
+    background: #e14eca;
+}
+
+.tasks-type td{
+    font-weight: bold;
+    padding: 0 !important;
+    margin: 0 !important;
+    border-radius: 50px;
+}
+
+.tasks-type .show-less {
+    display: none;
+}
+
+#assign .form-control[disabled] {
+    background: #ccc;
+    color: unset;
 }
 
 
