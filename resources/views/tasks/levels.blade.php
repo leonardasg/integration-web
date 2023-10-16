@@ -9,14 +9,14 @@
                 @if(!empty($levels))
                     @foreach($levels as $level)
                         <tr>
-                            <td class="text-center">
+                            <td class="text-center @if($level->id <= $freshman_level) purple @endif">
                                 {{ $level->id }}
                             </td>
-                            <td>
+                            <td class="@if($level->id <= $freshman_level) purple @endif">
                                 {{ $level->privilege }}
                             </td>
-                            <td class="text-center">
-                                {{ $level->points }}@if($level->locked)<i class="tim-icons icon-key-25" style="color:darkgoldenrod;display:block"></i>@endif
+                            <td class="text-center @if($level->id <= $freshman_level) purple @endif">
+                                {{ $level->points }}@if($level->locked)<i class="tim-icons icon-lock-circle" style="color:darkgoldenrod;display:block"></i>@endif
                             </td>
                         </tr>
                     @endforeach

@@ -12,6 +12,8 @@
                         @csrf
                         @method('put')
 
+                        <input type="hidden" name="from" value="{{ $from }}">
+
                         <div class="card-body">
                             @include('alerts.success')
 
@@ -58,7 +60,7 @@
                                 @include('alerts.feedback', ['field' => 'date_to'])
                             </div>
 
-                            @if(auth()->user()->isAdmin() || auth()->user()->isCoordinator($task->type ?? null))
+                            @if(auth()->user()->isAdmin() || auth()->user()->isZIKCoordinator() || auth()->user()->isCoordinator($task->type ?? null))
                                 <div id="active" class="form-group{{ $errors->has('active') ? ' has-danger' : '' }}">
                                     <label for="active">{{ __('Active') }}</label>
                                     <select name="active" class="form-control{{ $errors->has('active') ? ' is-invalid' : '' }}">

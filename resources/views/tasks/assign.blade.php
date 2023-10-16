@@ -22,19 +22,25 @@
                                     </option>
                                 @endforeach
                             </optgroup>
-                            <optgroup label="Quests">
-                                @foreach($quests as $task)
-                                    <option value="{{ $task->id }}">
-                                        {{ $task->name }}
-                                    </option>
-                                @endforeach
-                            </optgroup>
+                            @if(!empty($quests))
+                                <optgroup label="Quests">
+                                    @foreach($quests as $task)
+                                        <option value="{{ $task->id }}">
+                                            {{ $task->name }}
+                                        </option>
+                                    @endforeach
+                                </optgroup>
+                            @endif
                         </select>
                         @include('alerts.feedback', ['field' => 'task'])
                     </div>
 
                     <div class="form-group{{ $errors->has('freshman') ? ' has-danger' : '' }}">
                         <label>{{ __('Freshman') }}</label>
+                            <div id="freshman-checkbox-all" class="freshman-checkbox">
+                                <input type="checkbox" name="freshman[]" value="all">
+                                <span>All</span>
+                            </div>
                         @foreach($freshmen as $freshman)
                             <div id="freshman-checkbox-{{ $freshman->user->id }}" class="freshman-checkbox">
                                 <input type="checkbox" name="freshman[]" value="{{ $freshman->user->id }}">

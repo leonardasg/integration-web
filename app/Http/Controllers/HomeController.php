@@ -28,7 +28,8 @@ class HomeController extends Controller
         {
             $user = auth()->user();
             $freshman = new Freshman($user);
-            $tasks = $freshman->getTasks(false);
+            $tasks = $freshman->getTasks(false, true);
+            $mentoring_tasks = $freshman->getMentoringTasks(false);
             $quests = $freshman->getQuests(false);
             $levels = Level::all();
 
@@ -37,6 +38,19 @@ class HomeController extends Controller
                 'freshman' => $freshman,
                 'quests' => $quests,
                 'levels' => $levels,
+                'mentor_tasks' => $mentoring_tasks,
+            ]);
+        }
+
+        if (auth()->user()->isMember())
+        {
+            $user = auth()->user();
+            $tasks = $user->getCreatedTasks();
+            $freshmen = Freshman::getFreshmen();
+
+            return view('dashboard', [
+                'tasks' => $tasks,
+                'freshmen' => $freshmen,
             ]);
         }
 

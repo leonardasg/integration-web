@@ -22,25 +22,20 @@
         </div>
 
         <div class="row">
-            <div class="col-lg-12 col-md-12">
-                @include('tasks.freshman_tasks_dashboard')
-            </div>
-        </div>
-
-        <div class="row">
             <div class="col-xl-9 col-lg-6 col-md-6">
-                @include('tasks.freshman_quests_dashboard')
+                @include('tasks.freshman_tasks_dashboard',  ['tasks' => $tasks, 'as_type' => true, 'table_name' => __('Tasks of committees')])
+
+                @include('tasks.freshman_tasks_dashboard', ['tasks' => $mentor_tasks, 'table_name' => __('Mentoring tasks')])
+
+                @include('tasks.freshman_tasks_dashboard', ['tasks' => $quests, 'table_name' => __('Quests')])
             </div>
 
             <div class="col-xl-3 col-lg-6 col-md-6">
-                @include('tasks.levels')
+                @include('tasks.levels', ['freshman_level' => $freshman->level])
             </div>
         </div>
     @elseif(auth()->user()->isMember())
-        <div class="text-center">
-            <h1  class="purple">Sveikas, nary!</h1>
-            <h3 class="purple">Čia sudėsiu vėliau tavo sukurtus task'us. Dabar viską gali pasiekt per šoninius tab'us!</h3>
-        </div>
+        @include('tasks.member_tasks_dashboard')
     @else
         <div class="text-center">
             <h1 class="purple">Congratulations on your registration!</h1>

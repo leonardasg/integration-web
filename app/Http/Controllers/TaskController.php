@@ -18,11 +18,12 @@ class TaskController extends Controller
     public function tasks()
     {
         $tasks = Task::getTasks(true);
+        $tasks_by_type = Task::getTasks(true, true);
         $quests = Task::getQuests(true);
 
         $freshmen = Freshman::getFreshmen();
 
-        return view('tasks.tasks', ['tasks' => $tasks, 'quests' => $quests, 'freshmen' => $freshmen]);
+        return view('tasks.tasks', ['tasks' => $tasks, 'tasks_by_type' => $tasks_by_type, 'quests' => $quests, 'freshmen' => $freshmen]);
     }
 
     /**
@@ -36,7 +37,10 @@ class TaskController extends Controller
         $options = $user->getRolesAsOptions();
         $selected_type = $request->get('selected_type');
 
-        return view('tasks.task_form', ['task_types' => $options, 'selected_type' => $selected_type]);
+        return view('tasks.task_form', [
+            'task_types' => $options,
+            'selected_type' => $selected_type
+        ]);
     }
 
     /**
@@ -65,14 +69,14 @@ class TaskController extends Controller
             $task->type = $request->get('type');
             $task->date_from = $request->get('date_from');
             $task->date_to = $request->get('date_to');
-            $task->active = false;
+            $task->active = $request->get('active') ?? false;
 
             if (!$task->save())
             {
                 throw new \Exception('Add failed.');
             }
 
-            return redirect()->route('task.tasks')->withStatus(__('Task successfully added.'));
+            return redirect()->route('tasks.tasks')->withStatus(__('Task successfully added.'));
         }
         catch (\Exception $e) {
             return back()->withError(__('Task add failed.'));
@@ -87,7 +91,7 @@ class TaskController extends Controller
             {
                 throw new \Exception('Update failed.');
             }
-            return redirect()->route('task.tasks')->withStatus(__('Task successfully updated.'));
+            return redirect()->back()->withStatus(__('Task successfully updated.'));
         }
         catch (\Exception $e) {
             return back()->withError(__('Task update failed.'));
@@ -98,6 +102,9 @@ class TaskController extends Controller
     {
         try {
             $task = Task::find($request->get('id_task'));
+
+            $this->assign($request, $task);
+
             if (!$task->destroy($task->id))
             {
                 throw new \Exception('Remove failed.');
@@ -109,11 +116,24 @@ class TaskController extends Controller
         }
     }
 
-    public function assign(Request $request)
+    public function assign(Request $request, $task = null)
     {
         try {
-            $task = Task::find($request->get('task'));
+            if (!isset($task))
+            {
+                $task = Task::find($request->get('task'));
+            }
+
+            if (!auth()->user()->canEditTask($task))
+            {
+                return back()->withError(__('You do not have permissions to verify this task.'));
+            }
+
             $freshmen = $request->get('freshman');
+            if (!empty($freshmen) && $freshmen[0] == 'all')
+            {
+                array_shift($freshmen);
+            }
 
             $assigned_before = UserPoint::where('id_task', $task->id)->get();
             $return = $this->unassignUnchecked($task, $assigned_before, $freshmen);
@@ -145,11 +165,11 @@ class TaskController extends Controller
 
             if ($task->type == config('custom.QUEST_ID'))
             {
-                return redirect()->route('task.tasks')->withQuestStatus(__('Quest successfully assigned.'));
+                return redirect()->back()->withQuestStatus(__('Quest successfully assigned.'));
             }
             else
             {
-                return redirect()->route('task.tasks')->withStatus(__('Task successfully assigned.'));
+                return redirect()->back()->withStatus(__('Task successfully assigned.'));
             }
         }
         catch (\Exception $e) {
@@ -169,11 +189,11 @@ class TaskController extends Controller
 
             if ($task->type == config('custom.QUEST_ID'))
             {
-                return redirect()->route('task.tasks')->withQuestStatus(__('Quest successfully unassigned.'));
+                return redirect()->back()->withQuestStatus(__('Quest successfully unassigned.'));
             }
             else
             {
-                return redirect()->route('task.tasks')->withStatus(__('Task successfully unassigned.'));
+                return redirect()->back()->withStatus(__('Task successfully unassigned.'));
             }
         }
 
@@ -213,7 +233,7 @@ class TaskController extends Controller
             $user_point = UserPoint::find($id);
 
             $task = Task::find($user_point->id_task);
-            if (!auth()->user()->canVerify($task))
+            if (!auth()->user()->canEditTask($task))
             {
                 return back()->withError(__('You do not have permissions to verify this task.'));
             }
@@ -247,14 +267,21 @@ class TaskController extends Controller
         $id_task = request('id_task');
         $task = Task::find($id_task);
         $assigned = $task->getAssigned();
+        $freshmen = Freshman::getFreshmen();
 
         if (empty($assigned))
         {
             return response()->json(['message' => 'No assigned'], 404);
         }
+        $response = [];
+        $response['assigned'] = $assigned;
 
-        return response()->json([
-            'assigned' => $assigned,
-        ]);
+        $response['all'] = false;
+        if (count($assigned) == count($freshmen))
+        {
+            $response['all'] = true;
+        }
+
+        return response()->json($response);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -178,22 +179,36 @@ class User extends Authenticatable
         return $roles;
     }
 
-    public function canVerify($task)
-    {
-        return (
-            $this->isAdmin() ||
-            $this->isCoordinator($task->type) ||
-            $this->id == $task->created_by ||
-            $task->type == config('custom.QUEST_ID')
-        );
-    }
-
     public function canEditTask($task)
     {
         return (
             $task->created_by == auth()->user()->getAuthIdentifier() ||
             auth()->user()->isAdmin() ||
-            auth()->user()->isCoordinator($task->type)
+            auth()->user()->isCoordinator($task->type) ||
+            $task->type == config('custom.QUEST_ID')
         );
+    }
+
+    public function getCreatedTasks($with_assigned = true)
+    {
+        $query = '
+            SELECT t.*, r.name as role_name
+            FROM `tasks` t
+                INNER JOIN `roles` r ON r.`id` = t.`type`
+            WHERE t.`created_by` = ? AND t.`type` != ?';
+
+        $tasks = DB::select($query, [$this->getAuthIdentifier(), config('custom.QUEST_ID')]);
+
+        foreach ($tasks as $task)
+        {
+            if ($with_assigned)
+            {
+                $task_obj = Task::find($task->id);
+                $task->assigned_to = $task_obj->getAssigned();
+            }
+            $task->created_by = $this->getAuthIdentifier();
+        }
+
+        return $tasks;
     }
 }

@@ -24,7 +24,7 @@ class Task extends Model
         return $this->hasMany(UserPoint::class, 'id_task', 'id');
     }
 
-    public static function getTasks($with_assigned = false)
+    public static function getTasks($with_assigned = false, $by_type = false)
     {
         $tasks = Task::with('user', 'role')->where('type', '!=', config('custom.QUEST_ID'))->get();
         if (!$with_assigned)
@@ -32,9 +32,21 @@ class Task extends Model
             return $tasks;
         }
 
+        $tasks_by_type = [];
         foreach ($tasks as $task)
         {
             $task['assigned_to'] = $task->getAssigned();
+
+            if (empty($tasks_by_type[$task->type]))
+            {
+                $tasks_by_type[$task->type] = [];
+            }
+            $tasks_by_type[$task->type][] = $task;
+        }
+
+        if ($by_type)
+        {
+            return $tasks_by_type;
         }
 
         return $tasks;
