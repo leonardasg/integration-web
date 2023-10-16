@@ -23,10 +23,16 @@ class FreshmanController extends Controller
         $freshman = new Freshman($user);
 
         $tasks = $freshman->getTasks(false);
+        $mentor_tasks = $freshman->getMentoringTasks(false);
         $quests = $freshman->getQuests(false);
         $freshmen = Freshman::getFreshmen();
 
-        return view('tasks.freshman_tasks', ['tasks' => $tasks, 'freshman' => $freshman, 'quests' => $quests, 'freshmen' => $freshmen]);
+        return view('tasks.freshman_tasks', [
+            'tasks' => $tasks,
+            'freshman' => $freshman,
+            'quests' => $quests,
+            'mentor_tasks' => $mentor_tasks,
+            'freshmen' => $freshmen]);
     }
 
     public function getPointsForDisplay()
