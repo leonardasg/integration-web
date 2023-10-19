@@ -71,7 +71,7 @@
                                                 </button>
                                                 <div class="dropdown-menu dropdown-menu-right"
                                                      aria-labelledby="dropdownMenuLink">
-                                                    <a href="{{ route('task.edit', ['task' => $task]) }}"
+                                                    <a href="{{ route('task.edit', ['task' => $task->id]) }}"
                                                        class="dropdown-item">Edit</a>
 
                                                     <form method="POST" action="{{ route('task.remove') }}">
