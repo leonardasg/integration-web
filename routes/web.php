@@ -54,6 +54,9 @@ Route::group(['middleware' => ['auth', 'role:member']], function () {
     Route::put('update-task', ['as' => 'task.update', 'uses' => 'App\Http\Controllers\TaskController@update']);
 
     Route::put('remove-task', ['as' => 'task.remove', 'uses' => 'App\Http\Controllers\TaskController@remove']);
+
+    Route::post('/api/user-points/edit-count', 'App\Http\Controllers\TaskController@editUserPointsCount');
+    Route::get('/api/user-points/get-count', 'App\Http\Controllers\TaskController@getUserPointsCount');
 });
 
 Route::group(['middleware' => ['auth', 'role:site-admin']], function () {

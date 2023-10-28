@@ -57,7 +57,7 @@ class Freshman extends Model
     {
         $query = '
             SELECT t.*,
-                   up.*, up.id as `id_user_point`, up.`assigned_at`, up.`finished_at`, up.`verified_at`,
+                   up.*, up.id as `id_user_point`, up.`assigned_at`, up.`finished_at`, up.`verified_at`, up.`count`,
                    r.name as role_name,
                    u.`name` as created_by
             FROM `user_points` up
@@ -138,7 +138,7 @@ class Freshman extends Model
         $points = 0;
         foreach ($tasks as $row)
         {
-            $points += $row->points;
+            $points += $row->points * $row->count;
         }
         return $points;
     }

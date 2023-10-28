@@ -456,4 +456,35 @@ class TaskController extends Controller
         }
         return $finished_formatted;
     }
+
+    public function getUserPointsCount()
+    {
+        $id_user_points = request('id_user_points');
+        $user_point = UserPoint::find($id_user_points);
+        return response()->json(['count' => $user_point->count]);
+    }
+
+    public function editUserPointsCount()
+    {
+        $id_user_point = request('id_user_point');
+        $count = (int)request('count');
+        if (empty($count) || $count < 0)
+        {
+            return response()->json(['message' => 'A non-number or non-positive number was entered']);
+        }
+
+        $user_point = UserPoint::find($id_user_point);
+        if ($user_point->count == $count)
+        {
+            return response()->json(['message' => 'An old number was entered']);
+        }
+
+        $user_point->count = $count;
+        if ($user_point->save())
+        {
+            return true;
+        }
+
+        return response()->json(['message' => 'Something happened. Try again.']);
+    }
 }

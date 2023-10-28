@@ -22,6 +22,7 @@
                                 <th>Assigned</th>
                                 <th class="text-center">Finished</th>
                                 <th class="text-center">Verified</th>
+                                <th class="text-center">Count</th>
                             @elseif(isset($info) && $info == 'quests')
                                 <th>No.</th>
                                 <th>Name</th>
@@ -38,6 +39,7 @@
                                 <th>Assigned</th>
                                 <th>Finished</th>
                                 <th>Verified</th>
+                                <th class="text-center">Count</th>
                             @endif
                             </thead>
                             <tbody>
@@ -62,6 +64,7 @@
                                                 <span class="tim-icons red icon-simple-remove"></span>
                                             @endif
                                         </td>
+                                        <td class="text-center">{{ $task->count }}</td>
                                     @elseif(isset($info) && $info == 'quests')
                                         <td>{{$loop->index + 1}}</td>
                                         <td>{{ $task->name }}</td>
@@ -102,6 +105,7 @@
                                                 <span class="tim-icons red icon-simple-remove"></span>
                                             @endif
                                         </td>
+                                        <td class="text-center">{{ $task->count }}</td>
                                     @endif
                                 </tr>
                             @endforeach

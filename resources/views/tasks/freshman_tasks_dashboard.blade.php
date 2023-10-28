@@ -37,7 +37,11 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <p class="title">{{ $task->name }} ({{ $task->points }} {{ __('points') }})</p>
+                                        <p class="title">{{ $task->name }}
+                                            <span class="purple">
+                                                @if(!empty($task->points)) ( {{ $task->points }} {{ __('points') }} @if($task->count > 1) x {{ $task->count }} {{ __('times')}} @endif {{ __(')') }} @endif
+                                            </span>
+                                        </p>
                                         @if(!empty($task->description))
                                             <p class="text-muted">{{ $task->description }}</p>
                                         @endif
@@ -62,7 +66,11 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <p class="title">{{ $task->name }} @if(!empty($task->points)) ({{ $task->points }} {{ __('points') }}) @endif</p>
+                                    <p class="title">{{ $task->name }}
+                                        <span class="purple">
+                                            @if(!empty($task->points)) ( {{ $task->points }} {{ __('points') }} @if($task->count > 1) x {{ $task->count }} {{ __('times')}} @endif {{ __(')') }} @endif
+                                        </span>
+                                    </p>
                                     @if(!empty($task->description))
                                         <p class="text-muted">{{ $task->description }}</p>
                                     @endif

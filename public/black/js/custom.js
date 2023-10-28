@@ -322,6 +322,54 @@ custom = {
         });
     },
 
+    editCount: function () {
+        $('.edit-count').off('click').on('click', function() {
+            var id_user_point = $(this).data('id_user_point');
+
+            axios.get(`/api/user-points/get-count?id_user_points=${id_user_point}`)
+                .then(response => {
+                    const count = response.data.count;
+                    Swal.fire({
+                        title: 'How many times user finished this task?',
+                        html: `<input type="text" id="count" class="swal2-input" value="${count}">`,
+                        confirmButtonText: 'Save',
+                        focusConfirm: false,
+                        preConfirm: () => {
+                            const new_count = Swal.getPopup().querySelector('#count').value
+                            if (!new_count) {
+                                Swal.showValidationMessage(`Please enter number`)
+                            }
+
+                            axios.post('/api/user-points/edit-count', {
+                                id_user_point: id_user_point,
+                                count: new_count
+                            })
+                                .then(function (response) {
+                                    if (typeof response.data.message !== 'undefined') {
+                                        Swal.fire({
+                                            title: response.data.message
+                                        });
+                                    } else {
+                                        Swal.fire({
+                                            title: `Successfully changed count`
+                                        });
+                                        location.reload();
+                                    }
+                                })
+                                .catch(function (error) {
+                                    Swal.showValidationMessage(
+                                        `Request failed: ${error}`
+                                    )
+                                });
+                        }
+                    })
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+    },
+
     hideShowTableRows: function () {
         $('.show-more').click(function() {
             var tableId = $(this).data('toggle');

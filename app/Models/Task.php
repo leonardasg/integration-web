@@ -72,7 +72,7 @@ class Task extends Model
     public function getAssigned()
     {
         return DB::select('
-            SELECT up.`id` as `id_user_point`, up.`assigned_at`, up.`finished_at`, up.`verified_at`,
+            SELECT up.`id` as `id_user_point`, up.`assigned_at`, up.`finished_at`, up.`verified_at`, up.`count`,
                    u.`id` as `id_user`, u.`name` as `user_name`
             FROM `user_points` up
                 INNER JOIN `users` u ON u.`id` = up.`id_user`

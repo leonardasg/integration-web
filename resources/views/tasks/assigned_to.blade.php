@@ -4,6 +4,7 @@
         <th>Assigned Freshman</th>
         <th class="text-center">Finished</th>
         <th class="text-center">Verified</th>
+        <th class="text-center">Count</th>
         </thead>
         <tbody>
 
@@ -24,6 +25,7 @@
                         <span class="tim-icons red icon-simple-remove"></span>
                     @endif
                 </td>
+                <td class="text-center">{{$task->assigned_to[0]->count}}</td>
 
                 @if(auth()->user()->getAuthIdentifier() == $task->created_by ||
                         auth()->user()->isAdmin() ||
@@ -58,6 +60,10 @@
                                         Verify
                                     </button>
                                 </form>
+
+                                <button class="dropdown-item green edit-count" type="submit" data-id_user_point="{{ $task->assigned_to[0]->id_user_point }}">
+                                    Change count
+                                </button>
                             </div>
                         </div>
                     </td>
@@ -65,7 +71,7 @@
             </tr>
             @if(isset($task->assigned_to[1]))
                 <tr class="show-more-less show-more-row">
-                    <td class="text-center" colspan="4">
+                    <td class="text-center" colspan="10">
                         <button type="button" class="btn btn-link show-more btn-icon" data-toggle="{{ $task->id }}">
                             <i class="tim-icons icon-minimal-down"></i>
                         </button>
@@ -89,6 +95,7 @@
                                 <span class="tim-icons red icon-simple-remove"></span>
                             @endif
                         </td>
+                        <td class="text-center">{{$task->assigned_to[$index]->count}}</td>
 
                         @if(auth()->user()->getAuthIdentifier() == $task->created_by ||
                                 auth()->user()->isAdmin() ||
@@ -126,6 +133,10 @@
                                                 Verify
                                             </button>
                                         </form>
+
+                                        <button class="dropdown-item green edit-count" type="submit" value="{{ $task->assigned_to[$index]->id_user_point }}">
+                                            Change count
+                                        </button>
                                     </div>
                                 </div>
                             </td>
@@ -134,7 +145,7 @@
                 @endfor
 
                 <tr class="show-more-less show-less-row">
-                    <td class="text-center" colspan="4">
+                    <td class="text-center" colspan="10">
                         <button type="button" class="btn btn-link show-less btn-icon" data-toggle="{{ $task->id }}">
                             <i class="tim-icons icon-minimal-up"></i>
                         </button>
@@ -151,6 +162,7 @@
     <script>
         $(document).ready(function () {
             custom.hideShowTableRows();
+            custom.editCount();
         });
     </script>
 @endpush
