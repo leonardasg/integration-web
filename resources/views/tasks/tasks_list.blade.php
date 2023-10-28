@@ -92,7 +92,8 @@
                                                 <button class="dropdown-item red confirm-form" type="submit" data-confirm="Are you sure you want to remove this task?">Remove</button>
                                             </form>
                                             @if($task->active)
-                                                <a class="dropdown-item green" href="#" data-toggle="modal" data-target="#assign" data-task="{{$task->id}}">Assign freshman</a>
+                                                <a class="dropdown-item green" href="#" data-toggle="modal" data-target="#assign" data-task="{{$task->id}}">Assign freshmen</a>
+                                                <a class="dropdown-item green" href="#" data-toggle="modal" data-target="#verify" data-task="{{$task->id}}">Verify freshmen</a>
                                             @endif
                                         </div>
                                     </div>

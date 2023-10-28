@@ -134,12 +134,22 @@ custom = {
                 if ($(this).is('#freshman-checkbox-all')) {
                     $('[id^="freshman-checkbox-"] input[type="checkbox"]').prop('checked', true);
                 }
+
+                if ($(this).is('#freshman-checkbox-all-finished')) {
+                    $('[id^="freshman-checkbox-"] input[type="checkbox"][data-finished="true"]').prop('checked', true);
+                }
             } else {
                 checkbox.prop('checked', false).removeAttr('checked');
                 if ($(this).is('#freshman-checkbox-all')) {
                     $('[id^="freshman-checkbox-"] input[type="checkbox"]').prop('checked', false);
                 } else {
                     $('[id^="freshman-checkbox-all"] input[type="checkbox"]').prop('checked', false);
+                }
+
+                if ($(this).is('#freshman-checkbox-all-finished')) {
+                    $('[id^="freshman-checkbox-"] input[type="checkbox"][data-finished="true"]').prop('checked', false);
+                } else {
+                    $('[id^="freshman-checkbox-all-finished"] input[type="checkbox"]').prop('checked', false);
                 }
             }
         });
@@ -170,7 +180,7 @@ custom = {
         }
     },
 
-    selectTask: function () {
+    selectAssignTask: function () {
         $('.dropdown-item[data-target="#assign"]').click(function () {
             var taskValue = $(this).data('task');
             var $select = $('select[name="task"]');
@@ -193,6 +203,45 @@ custom = {
                 })
                 .catch(error => {
                     console.error('Error fetching task assigned freshmen:', error);
+                });
+        });
+    },
+
+    selectVerifyTask: function () {
+        $('.dropdown-item[data-target="#verify"]').click(function () {
+            var taskValue = $(this).data('task');
+            var $select = $('select[name="task"]');
+
+            $select.val(taskValue);
+            $select.find('option:not(:selected)').prop('disabled', true);
+
+            axios.get(`/api/task/get-verified?id_task=${taskValue}`)
+                .then(response => {
+                    const verified = response.data.verified;
+                    const all_verified = response.data.all_verified;
+
+                    verified.forEach(freshman => {
+                        $('input[type="checkbox"][name="freshman[]"][value="' + freshman.id_user + '"]').prop('checked', true);
+                    });
+
+                    if (all_verified) {
+                        $('input[type="checkbox"][name="freshman[]"][value="all"]').prop('checked', true);
+                    }
+
+                    const finished = response.data.finished;
+                    const all_finished = response.data.all_finished;
+
+                    finished.forEach(freshman => {
+                        $('#freshman-checkbox-' + freshman.id_user + ' .additional-text').text('finished');
+                        $('input[type="checkbox"][name="freshman[]"][value="' + freshman.id_user + '"][data-finished="false"]').attr('data-finished', true);
+                    });
+
+                    if (all_finished) {
+                        $('input[type="checkbox"][name="freshman[]"][value="all-finished"]').prop('checked', true);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching task verified freshmen:', error);
                 });
         });
     },

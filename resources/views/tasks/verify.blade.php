@@ -1,13 +1,13 @@
-<div class="modal fade" id="assign" tabindex="-1" role="dialog" aria-labelledby="assign-label" aria-hidden="true">
+<div class="modal fade" id="verify" tabindex="-1" role="dialog" aria-labelledby="verify-label" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="assign-label">Assign freshman</h5>
+                <h5 class="modal-title" id="verify-label">Verify freshman</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="post" action="{{ route('task.assign') }}" autocomplete="off">
+            <form method="post" action="{{ route('task.bulk-verify') }}" autocomplete="off">
                 <div class="modal-body">
                     @csrf
                     @method('put')
@@ -41,16 +41,20 @@
                                 <input type="checkbox" name="freshman[]" value="all">
                                 <span>All</span>
                             </div>
+                            <div id="freshman-checkbox-all-finished" class="freshman-checkbox">
+                                <input type="checkbox" name="freshman[]" value="all-finished">
+                                <span>All Finished</span>
+                            </div>
                         @foreach($freshmen as $freshman)
                             <div id="freshman-checkbox-{{ $freshman->user->id }}" class="freshman-checkbox">
-                                <input type="checkbox" name="freshman[]" value="{{ $freshman->user->id }}">
-                                <span>{{ $freshman->user->name }}</span>
+                                <input type="checkbox" name="freshman[]" value="{{ $freshman->user->id }}" data-finished="false">
+                                <span>{{ $freshman->user->name }}</span><span class="additional-text"></span>
                             </div>
                         @endforeach
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-fill btn-primary">{{ __('Assign') }}</button>
+                    <button type="submit" class="btn btn-fill btn-primary">{{ __('Verify') }}</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Close') }}</button>
                 </div>
             </form>
@@ -61,7 +65,7 @@
 @push('js')
     <script>
         $(document).ready(function() {
-            custom.selectAssignTask();
+            custom.selectVerifyTask();
             custom.initMultipleSelection();
         });
     </script>

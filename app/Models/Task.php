@@ -78,4 +78,24 @@ class Task extends Model
                 INNER JOIN `users` u ON u.`id` = up.`id_user`
             WHERE up.id_task = ?', [$this->id]);
     }
+
+    public function getFinished()
+    {
+        return DB::select('
+            SELECT up.`id` as `id_user_point`, up.`assigned_at`, up.`finished_at`, up.`verified_at`,
+                   u.`id` as `id_user`, u.`name` as `user_name`
+            FROM `user_points` up
+                INNER JOIN `users` u ON u.`id` = up.`id_user`
+            WHERE up.id_task = ? AND up.`finished_at` IS NOT NULL', [$this->id]);
+    }
+
+    public function getVerified()
+    {
+        return DB::select('
+            SELECT up.`id` as `id_user_point`, up.`assigned_at`, up.`finished_at`, up.`verified_at`,
+                   u.`id` as `id_user`, u.`name` as `user_name`
+            FROM `user_points` up
+                INNER JOIN `users` u ON u.`id` = up.`id_user`
+            WHERE up.id_task = ? AND up.`verified_at` IS NOT NULL', [$this->id]);
+    }
 }

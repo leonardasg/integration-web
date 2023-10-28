@@ -48,6 +48,7 @@ Route::group(['middleware' => ['auth', 'role:member']], function () {
     Route::put('unassign-task', ['as' => 'task.unassign', 'uses' => 'App\Http\Controllers\TaskController@unassign']);
 
     Route::put('verify-task', ['as' => 'task.verify', 'uses' => 'App\Http\Controllers\TaskController@verify']);
+    Route::put('verify-task-bulk', ['as' => 'task.bulk-verify', 'uses' => 'App\Http\Controllers\TaskController@bulkVerify']);
 
     Route::get('edit-task', ['as' => 'task.edit', 'uses' => 'App\Http\Controllers\TaskController@edit']);
     Route::put('update-task', ['as' => 'task.update', 'uses' => 'App\Http\Controllers\TaskController@update']);
@@ -86,4 +87,5 @@ Route::post('/upload-image', 'App\Http\Controllers\ImageController@upload')->nam
 Route::get('/api/freshman/get-points', 'App\Http\Controllers\FreshmanController@getPointsForDisplay');
 Route::post('/api/freshman/finish-task', 'App\Http\Controllers\FreshmanController@finishTask');
 Route::get('/api/task/get-assigned', 'App\Http\Controllers\TaskController@getAssignedFreshmen');
+Route::get('/api/task/get-verified', 'App\Http\Controllers\TaskController@getVerifiedFreshmen');
 

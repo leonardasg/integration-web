@@ -262,6 +262,108 @@ class TaskController extends Controller
         }
     }
 
+    public function unverifyUnchecked($task, $verified_before, $verified_new)
+    {
+        // unverify all
+        if (empty($verified_new))
+        {
+            $verified_before->each(function ($user_point)
+            {
+                $user_point->finished_at = null;
+                $user_point->verified_at = null;
+                $user_point->save();
+            });
+
+            if ($task->type == config('custom.QUEST_ID'))
+            {
+                return redirect()->back()->withQuestStatus(__('Quest successfully unverified.'));
+            }
+            else
+            {
+                return redirect()->back()->withStatus(__('Task successfully unverified.'));
+            }
+        }
+
+        // unverify who are unchecked
+        $verified_before->each(function ($user_point) use ($verified_new)
+        {
+            if (!in_array($user_point->id_user, $verified_new))
+            {
+                $user_point->finished_at = null;
+                $user_point->verified_at = null;
+                $user_point->save();
+            }
+        });
+
+        return false;
+    }
+
+    public function bulkVerify(Request $request, $task = null)
+    {
+        try {
+            if (!isset($task))
+            {
+                $task = Task::find($request->get('task'));
+            }
+
+            if (!auth()->user()->canEditTask($task))
+            {
+                return back()->withError(__('You do not have permissions to verify this task.'));
+            }
+
+            $freshmen = $request->get('freshman');
+            if (!empty($freshmen) && $freshmen[0] == 'all')
+            {
+                array_shift($freshmen);
+            }
+            if (!empty($freshmen) && $freshmen[0] == 'all-finished')
+            {
+                array_shift($freshmen);
+            }
+
+            $verified_before = UserPoint::where('id_task', $task->id)->whereNotNull('verified_at')->get();
+            $return = $this->unverifyUnchecked($task, $verified_before, $freshmen);
+            if (!empty($return))
+            {
+                return $return;
+            }
+
+            foreach ($freshmen as $freshman_id)
+            {
+                // skip if already verified
+                $user_point = UserPoint::get()->where('id_user', $freshman_id)->where('id_task', $task->id)->first();
+                if (!empty($user_point->verified_at))
+                {
+                    continue;
+                }
+
+                $date_now = date('Y-m-d H:m:s');
+                if (empty($user_point->finished_at))
+                {
+                    $user_point->finished_at = $date_now;
+                }
+                $user_point->verified_at = $date_now;
+
+                if (!$user_point->save())
+                {
+                    throw new \Exception('Assign failed.');
+                }
+            }
+
+            if ($task->type == config('custom.QUEST_ID'))
+            {
+                return redirect()->back()->withQuestStatus(__('Quest successfully verified.'));
+            }
+            else
+            {
+                return redirect()->back()->withStatus(__('Task successfully verified.'));
+            }
+        }
+        catch (\Exception $e) {
+            return back()->withError(__('Task verification failed.'));
+        }
+    }
+
     public function getAssignedFreshmen()
     {
         $id_task = request('id_task');
@@ -283,5 +385,77 @@ class TaskController extends Controller
         }
 
         return response()->json($response);
+    }
+
+    public function getFinishedFreshmen($id_task = null, $json = true)
+    {
+        if (empty($id_task))
+        {
+            $id_task = request('id_task');
+        }
+        $task = Task::find($id_task);
+
+        $finished = $task->getFinished();
+        $freshmen = Freshman::getFreshmen();
+
+        if ($json && empty($finished))
+        {
+            return response()->json(['message' => 'No finished'], 404);
+        }
+
+        $finished_formatted = $this->getFormattedArrayByFreshmanId($freshmen, $finished);
+
+        $response = [];
+        $response['finished'] = $finished_formatted;
+        $response['all'] = false;
+        if (count($finished_formatted) == count($freshmen))
+        {
+            $response['all'] = true;
+        }
+
+        return $json ? response()->json($response) : $response;
+    }
+
+    public function getVerifiedFreshmen()
+    {
+        $id_task = request('id_task');
+        $task = Task::find($id_task);
+
+        $verified = $task->getVerified();
+        $finished = $task->getFinished();
+        $freshmen = Freshman::getFreshmen();
+
+        $response = [];
+
+        $response['verified'] = $verified;
+        $response['finished'] = $finished;
+        $response['all_verified'] = false;
+        if (count($verified) == count($freshmen))
+        {
+            $response['all_verified'] = true;
+        }
+        $response['all_finished'] = false;
+        if (count($finished) == count($verified))
+        {
+            $response['all_finished'] = true;
+        }
+
+        return response()->json($response);
+    }
+
+    public function getFormattedArrayByFreshmanId($freshmen, $array)
+    {
+        $finished_formatted = [];
+        foreach ($freshmen as $freshman)
+        {
+            foreach ($array as $item)
+            {
+                if ($freshman->user->id == $item->id_user)
+                {
+                    $finished_formatted[$freshman->user->id] = $item;
+                }
+            }
+        }
+        return $finished_formatted;
     }
 }

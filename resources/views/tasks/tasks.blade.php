@@ -10,6 +10,7 @@
     </div>
 
     @include('tasks.assign')
+    @include('tasks.verify')
 @endsection
 
 

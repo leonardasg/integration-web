@@ -170,4 +170,7 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     color: unset;
 }
 
-
+.form-group .additional-text {
+    color: #e14eca;
+    padding-left: 5px;
+}
