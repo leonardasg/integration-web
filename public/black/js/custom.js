@@ -182,6 +182,8 @@ custom = {
 
     selectAssignTask: function () {
         $('.dropdown-item[data-target="#assign"]').click(function () {
+            $('input[type="checkbox"]').prop('checked', false);
+
             var taskValue = $(this).data('task');
             var $select = $('select[name="task"]');
 
@@ -209,6 +211,10 @@ custom = {
 
     selectVerifyTask: function () {
         $('.dropdown-item[data-target="#verify"]').click(function () {
+            $('input[type="checkbox"]').prop('checked', false);
+            $('.additional-text').text('');
+            $('input[type="checkbox"][data-finished="true"]').attr('data-finished', false);
+
             var taskValue = $(this).data('task');
             var $select = $('select[name="task"]');
 

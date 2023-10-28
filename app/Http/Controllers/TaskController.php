@@ -269,7 +269,6 @@ class TaskController extends Controller
         {
             $verified_before->each(function ($user_point)
             {
-                $user_point->finished_at = null;
                 $user_point->verified_at = null;
                 $user_point->save();
             });
@@ -289,7 +288,6 @@ class TaskController extends Controller
         {
             if (!in_array($user_point->id_user, $verified_new))
             {
-                $user_point->finished_at = null;
                 $user_point->verified_at = null;
                 $user_point->save();
             }
@@ -346,7 +344,7 @@ class TaskController extends Controller
 
                 if (!$user_point->save())
                 {
-                    throw new \Exception('Assign failed.');
+                    throw new \Exception('Verify failed.');
                 }
             }
 
