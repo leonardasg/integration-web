@@ -309,6 +309,116 @@ custom = {
             $showMoreBtn.toggle();
             $showLessBtn.toggle();
         });
+    },
+
+    initCalendar: function ($events) {
+
+        $.ajaxSetup({
+            headers:{
+                'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        var calendar = $('#calendar').fullCalendar({
+            editable:true,
+            header:{
+                left:'prev,next today',
+                center:'title',
+                right:'month,agendaWeek,agendaDay'
+            },
+            events:$events,
+            selectable:true,
+            selectHelper: true,
+            firstDay: 1,
+            select:function(start, end, allDay)
+            {
+                var title = prompt('Event Title:');
+
+                if(title)
+                {
+                    var start = $.fullCalendar.formatDate(start, 'Y-MM-DD HH:mm:ss');
+
+                    var end = $.fullCalendar.formatDate(end, 'Y-MM-DD HH:mm:ss');
+
+                    axios.post('/api/calender/action', {
+                        title: title,
+                        start: start,
+                        end: end,
+                        type: 'add'
+                    })
+                        .then(function (response) {
+
+                            alert("Event Created Successfully");
+                        })
+                        .catch(function (error) {
+                            console.error(error);
+                        });
+                }
+            },
+            editable:true,
+            eventResize: function(event, delta)
+            {
+                var start = $.fullCalendar.formatDate(event.start, 'Y-MM-DD HH:mm:ss');
+                var end = $.fullCalendar.formatDate(event.end, 'Y-MM-DD HH:mm:ss');
+                var title = event.title;
+                var id = event.id;
+                axios.post('/api/calender/action', {
+                    title: title,
+                    start: start,
+                    end: end,
+                    id: id,
+                    type: 'update'
+                })
+                    .then(function (response) {
+                        calendar.fullCalendar('refetchEvents');
+                        alert("Event Updated Successfully");
+                    })
+                    .catch(function (error) {
+                        console.error(error);
+                    });
+            },
+            eventDrop: function(event, delta)
+            {
+                var start = $.fullCalendar.formatDate(event.start, 'Y-MM-DD HH:mm:ss');
+                var end = $.fullCalendar.formatDate(event.end, 'Y-MM-DD HH:mm:ss');
+                var title = event.title;
+                var id = event.id;
+                axios.post('/api/calender/action', {
+                    title: title,
+                    start: start,
+                    end: end,
+                    id: id,
+                    type: 'update'
+                })
+                    .then(function (response) {
+                        calendar.fullCalendar('refetchEvents');
+                        alert("Event Updated Successfully");
+                    })
+                    .catch(function (error) {
+                        console.error(error);
+                    });
+            },
+
+            eventClick:function(event)
+            {
+                if(confirm("Are you sure you want to remove it?"))
+                {
+                    var id = event.id;
+                    axios.post('/api/calender/action', {
+                        id: id,
+                        type: "delete"
+                    })
+                        .then(function (response) {
+                            calendar.fullCalendar('refetchEvents');
+                            alert("Event Deleted Successfully");
+                        })
+                        .catch(function (error) {
+                            console.error(error);
+                        });
+                }
+            }
+        });
+
     }
 };
 

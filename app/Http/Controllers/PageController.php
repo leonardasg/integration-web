@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Event;
+
 class PageController extends Controller
 {
     /**
@@ -19,9 +21,11 @@ class PageController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function maps()
+    public function calendar()
     {
-        return view('pages.maps');
+        $events = Event::all();
+
+        return view('pages.calendar', compact('events'));
     }
 
     /**

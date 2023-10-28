@@ -16,6 +16,13 @@
                 </a>
             </li>
 
+            <li @if ($pageSlug == 'calendar') class="active " @endif>
+                <a href="{{ route('pages.calendar') }}">
+                    <i class="tim-icons icon-calendar-60"></i>
+                    <p>{{ __('Calendar') }}</p>
+                </a>
+            </li>
+
             @if (auth()->user()->isAdmin())
                 <li>
                     <a data-toggle="collapse" href="#admin" aria-expanded="true">

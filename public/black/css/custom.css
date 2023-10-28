@@ -170,4 +170,39 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     color: unset;
 }
 
+#calendar .fc-view-container .fc-head {
+    background: #e14eca;
+}
+
+#calendar .fc-view-container .fc-body{
+    background: #27293d;
+}
+
+#calendar .fc-view-container .fc-event-main,
+#calendar .fc-view-container .fc-event{
+    background: #e14eca;
+    border: unset;
+    margin: 2px;
+    border-radius: 2px;
+    color: white;
+}
+
+#calendar .fc-day-header,
+#calendar .fc-day-number,
+#calendar .fc-event-time,
+#calendar .fc-time,
+#calendar .fc-time > span,
+#calendar .fc-axis > span{
+    color: white;
+    font-weight: bold;
+}
+
+#calendar .fc-bg .fc-today {
+    background: #1e1e24;
+}
+
+#calendar .fc-event-title {
+    font-weight: normal;
+}
+
 

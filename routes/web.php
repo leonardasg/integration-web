@@ -16,14 +16,11 @@ use App\Http\Controllers\Home;
 
 Auth::routes();
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Auth::routes();
-
 Route::get('/', 'App\Http\Controllers\HomeController@index')->name('home')->middleware('auth');
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('icons', ['as' => 'pages.icons', 'uses' => 'App\Http\Controllers\PageController@icons']);
-    Route::get('maps', ['as' => 'pages.maps', 'uses' => 'App\Http\Controllers\PageController@maps']);
+    Route::get('calendar', ['as' => 'pages.calendar', 'uses' => 'App\Http\Controllers\PageController@calendar']);
     Route::get('notifications', ['as' => 'pages.notifications', 'uses' => 'App\Http\Controllers\PageController@notifications']);
     Route::get('tables', ['as' => 'pages.tables', 'uses' => 'App\Http\Controllers\PageController@tables']);
     Route::get('typography', ['as' => 'pages.typography', 'uses' => 'App\Http\Controllers\PageController@typography']);
@@ -86,4 +83,5 @@ Route::post('/upload-image', 'App\Http\Controllers\ImageController@upload')->nam
 Route::get('/api/freshman/get-points', 'App\Http\Controllers\FreshmanController@getPointsForDisplay');
 Route::post('/api/freshman/finish-task', 'App\Http\Controllers\FreshmanController@finishTask');
 Route::get('/api/task/get-assigned', 'App\Http\Controllers\TaskController@getAssignedFreshmen');
+Route::post('/api/calender/action', 'App\Http\Controllers\EventController@action');
 

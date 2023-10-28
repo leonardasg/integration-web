@@ -20,6 +20,8 @@
         <link href="{{ asset('black') }}/css/black-dashboard.css?v=1.0.0" rel="stylesheet" />
         <link href="{{ asset('black') }}/css/theme.css" rel="stylesheet" />
         <link href="{{ asset('black') }}/css/custom.css?v=8" rel="stylesheet" />
+
+        <meta name="csrf-token" content="{{ csrf_token() }}" />
     </head>
     <body class="{{ $class ?? '' }}">
         @if (auth()->check())
@@ -178,5 +180,6 @@
             });
         </script>
         @stack('js')
+        @stack('scripts')
     </body>
 </html>
