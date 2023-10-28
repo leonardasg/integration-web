@@ -133,6 +133,7 @@ class Freshman extends Model
     public function getPoints()
     {
         $tasks = $this->getTasks();
+        $tasks = array_merge($tasks, $this->getMentoringTasks());
 
         $points = 0;
         foreach ($tasks as $row)
