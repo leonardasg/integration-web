@@ -421,17 +421,21 @@ class TaskController extends Controller
 
         $verified = $task->getVerified();
         $finished = $task->getFinished();
+        $assigned = $task->getAssigned();
         $freshmen = Freshman::getFreshmen();
 
         $response = [];
 
         $response['verified'] = $verified;
         $response['finished'] = $finished;
+        $response['assigned'] = $assigned;
+
         $response['all_verified'] = false;
         if (count($verified) == count($freshmen))
         {
             $response['all_verified'] = true;
         }
+
         $response['all_finished'] = false;
         if (count($finished) == count($verified))
         {

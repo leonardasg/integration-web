@@ -47,7 +47,7 @@
                             </div>
                         @foreach($freshmen as $freshman)
                             <div id="freshman-checkbox-{{ $freshman->user->id }}" class="freshman-checkbox">
-                                <input type="checkbox" name="freshman[]" value="{{ $freshman->user->id }}" data-finished="false">
+                                <input type="checkbox" name="freshman[]" value="{{ $freshman->user->id }}" data-assigned="false" data-finished="false">
                                 <span>{{ $freshman->user->name }}</span><span class="additional-text"></span>
                             </div>
                         @endforeach

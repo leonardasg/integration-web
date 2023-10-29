@@ -19,7 +19,7 @@
         <!-- CSS -->
         <link href="{{ asset('black') }}/css/black-dashboard.css?v=1.0.0" rel="stylesheet" />
         <link href="{{ asset('black') }}/css/theme.css" rel="stylesheet" />
-        <link href="{{ asset('black') }}/css/custom.css?v=12" rel="stylesheet" />
+        <link href="{{ asset('black') }}/css/custom.css?v=13" rel="stylesheet" />
     </head>
     <body class="{{ $class ?? '' }}">
         @if (auth()->check())
@@ -72,7 +72,7 @@
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script src="{{ asset('black') }}/js/black-dashboard.min.js?v=1.0.0"></script>
         <script src="{{ asset('black') }}/js/theme.js"></script>
-        <script src="{{ asset('black') }}/js/custom.js?v=12"></script>
+        <script src="{{ asset('black') }}/js/custom.js?v=13"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         @stack('js')

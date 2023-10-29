@@ -214,6 +214,8 @@ custom = {
             $('input[type="checkbox"]').prop('checked', false);
             $('.additional-text').text('');
             $('input[type="checkbox"][data-finished="true"]').attr('data-finished', false);
+            $('input[type="checkbox"][data-assigned="true"]').attr('data-assigned', false);
+            $('div.freshman-checkbox input[data-assigned="false"]').parent('div').show();
 
             var taskValue = $(this).data('task');
             var $select = $('select[name="task"]');
@@ -245,6 +247,12 @@ custom = {
                     if (all_finished) {
                         $('input[type="checkbox"][name="freshman[]"][value="all-finished"]').prop('checked', true);
                     }
+
+                    const assigned = response.data.assigned;
+                    assigned.forEach(freshman => {
+                        $('input[type="checkbox"][name="freshman[]"][value="' + freshman.id_user + '"][data-assigned="false"]').attr('data-assigned', true);
+                    });
+                    $('div.freshman-checkbox input[data-assigned="false"]').parent('div').hide();
                 })
                 .catch(error => {
                     console.error('Error fetching task verified freshmen:', error);
