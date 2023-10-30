@@ -134,7 +134,7 @@
                                             </button>
                                         </form>
 
-                                        <button class="dropdown-item green edit-count" type="submit" value="{{ $task->assigned_to[$index]->id_user_point }}">
+                                        <button class="dropdown-item green edit-count" type="submit" data-id_user_point="{{ $task->assigned_to[$index]->id_user_point }}">
                                             Change count
                                         </button>
                                     </div>

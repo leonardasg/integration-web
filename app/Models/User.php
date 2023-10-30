@@ -149,7 +149,7 @@ class User extends Authenticatable
             'id' => config('custom.QUEST_ID'),
             'name' => 'QUEST',
         ];
-        if (auth()->user()->isZIKCoordinator())
+        if (auth()->user()->isZIKCoordinator() || auth()->user()->isAdmin())
         {
             $options[] = [
                 'id' => config('custom.MENTOR_ID'),
