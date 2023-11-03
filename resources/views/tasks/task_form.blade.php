@@ -78,8 +78,8 @@
         </div>
     @else
         <div class="text-center">
-            <h1  class="purple">Ką čia darai?</h1>
-            <h3 class="purple">Neturi teisės taisyti šitą task'ą!</h3>
+            <h1  class="purple">What are you doing?</h1>
+            <h3 class="purple">You do not have permissions to edit this task!</h3>
         </div>
     @endif
 @endsection

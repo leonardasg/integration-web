@@ -9,8 +9,8 @@
         </div>
     </div>
 
-    @include('tasks.assign')
-    @include('tasks.verify')
+    @include('tasks.modals.assign')
+    @include('tasks.modals.verify')
 @endsection
 
 

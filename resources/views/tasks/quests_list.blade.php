@@ -56,7 +56,7 @@
                     @if(!empty($task->assigned_to))
                         <tr>
                             <td colspan="10">
-                                @include('tasks.assigned_to')
+                                @include('tasks.partials.assigned_to')
                             </td>
                         </tr>
                     @endif

@@ -31,11 +31,16 @@
             </div>
 
             <div class="col-xl-3 col-lg-6 col-md-6">
-                @include('tasks.levels', ['freshman_level' => $freshman->level])
+                @include('tasks.partials.levels', ['freshman_level' => $freshman->level])
             </div>
         </div>
     @elseif(auth()->user()->isMember())
         @include('tasks.member_tasks_dashboard')
+    @elseif(auth()->user()->isAdmin())
+        <div class="text-center">
+            <h1 class="purple">Hello Site Admin!</h1>
+            <h3 class="purple">If you run to some bug, problem or just have some questions -> contact <a href="https://www.facebook.com/GrazulioIgnas/" target="_blank">me</a></h3>
+        </div>
     @else
         <div class="text-center">
             <h1 class="purple">Congratulations on your registration!</h1>
