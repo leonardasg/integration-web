@@ -15,20 +15,21 @@
                     <div class="table-container">
                         <table class="table">
                             <thead class=" text-primary">
-                            @if(isset($info) && $info == 'mentoring')
+                            @if(isset($info) && ($info == 'mentoring' || $info == 'other_tasks'))
                                 <th>No.</th>
                                 <th>Name</th>
+                                <th>Description</th>
                                 <th class="text-center">Points</th>
-                                <th>Assigned</th>
-                                <th class="text-center">Finished</th>
-                                <th class="text-center">Verified</th>
+                                <th class="text-center date">Assigned</th>
+                                <th class="text-center date">Finished</th>
+                                <th class="text-center date">Verified</th>
                                 <th class="text-center">Count</th>
                             @elseif(isset($info) && $info == 'quests')
                                 <th>No.</th>
                                 <th>Name</th>
-                                <th>Assigned</th>
-                                <th class="text-center">Finished</th>
-                                <th class="text-center">Verified</th>
+                                <th class="text-center date">Assigned</th>
+                                <th class="text-center date">Finished</th>
+                                <th class="text-center date">Verified</th>
                             @else
                                 <th>No.</th>
                                 <th>Name</th>
@@ -36,30 +37,31 @@
                                 <th>Type</th>
                                 <th class="text-center">Points</th>
                                 <th>Created by</th>
-                                <th>Assigned</th>
-                                <th>Finished</th>
-                                <th>Verified</th>
+                                <th class="text-center date">Assigned</th>
+                                <th class="text-center date">Finished</th>
+                                <th class="text-center date">Verified</th>
                                 <th class="text-center">Count</th>
                             @endif
                             </thead>
                             <tbody>
                             @foreach($tasks as $task)
                                 <tr>
-                                    @if(isset($info) && $info == 'mentoring')
+                                    @if(isset($info) && ($info == 'mentoring' || $info == 'other_tasks'))
                                         <td>{{$loop->index + 1}}</td>
                                         <td>{{ $task->name }}</td>
+                                        <td>{{ $task->description }}</td>
                                         <td class="text-center">{{ $task->points }}</td>
                                         <td>{{ $task->assigned_at }}</td>
                                         <td class="text-center">
                                             @if($task->finished_at)
-                                                <span class="tim-icons green icon-check-2"></span>
+                                                {{ $task->finished_at }}
                                             @else
                                                 <span class="tim-icons red icon-simple-remove"></span>
                                             @endif
                                         </td>
                                         <td class="text-center">
                                             @if($task->verified_at)
-                                                <span class="tim-icons green icon-check-2"></span>
+                                                {{ $task->verified_at }}
                                             @else
                                                 <span class="tim-icons red icon-simple-remove"></span>
                                             @endif
@@ -71,14 +73,14 @@
                                         <td>{{ $task->assigned_at }}</td>
                                         <td class="text-center">
                                             @if($task->finished_at)
-                                                <span class="tim-icons green icon-check-2"></span>
+                                                {{ $task->finished_at }}
                                             @else
                                                 <span class="tim-icons red icon-simple-remove"></span>
                                             @endif
                                         </td>
                                         <td class="text-center">
                                             @if($task->verified_at)
-                                                <span class="tim-icons green icon-check-2"></span>
+                                                {{ $task->verified_at }}
                                             @else
                                                 <span class="tim-icons red icon-simple-remove"></span>
                                             @endif
@@ -93,14 +95,14 @@
                                         <td>{{ $task->assigned_at }}</td>
                                         <td class="text-center">
                                             @if($task->finished_at)
-                                                <span class="tim-icons green icon-check-2"></span>
+                                                {{ $task->finished_at }}
                                             @else
                                                 <span class="tim-icons red icon-simple-remove"></span>
                                             @endif
                                         </td>
                                         <td class="text-center">
                                             @if($task->verified_at)
-                                                <span class="tim-icons green icon-check-2"></span>
+                                                {{ $task->verified_at }}
                                             @else
                                                 <span class="tim-icons red icon-simple-remove"></span>
                                             @endif

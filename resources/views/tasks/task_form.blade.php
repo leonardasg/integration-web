@@ -8,7 +8,7 @@
                     <div class="card-header">
                         <h5 class="title">{{ isset($task) ? __('Edit Task')  : __('New Task') }}</h5>
                     </div>
-                    <form method="post" action="{{ isset($task) ? route('task.update', ['task' => $task]) : route('task.add') }}" autocomplete="off">
+                    <form method="post" action="{{ isset($task) ? route('task.update', ['id_task' => $task]) : route('task.add') }}" autocomplete="off">
                         @csrf
                         @method('put')
 
@@ -46,14 +46,8 @@
                                 @include('alerts.feedback', ['field' => 'points'])
                             </div>
 
-                            <div id="date_from" class="form-group{{ $errors->has('date_from') ? ' has-danger' : '' }}">
-                                <label>{{ __('Date From') }}</label>
-                                <input type="datetime-local" name="date_from" class="form-control{{ $errors->has('date_from') ? ' is-invalid' : '' }}" value="{{ old('date_from', isset($task) ? $task->date_from : '') }}">
-                                @include('alerts.feedback', ['field' => 'date_from'])
-                            </div>
-
                             <div id="date_to" class="form-group{{ $errors->has('date_to') ? ' has-danger' : '' }}">
-                                <label>{{ __('Date To') }}</label>
+                                <label>{{ __('Deadline') }}</label>
                                 <input type="datetime-local" name="date_to" class="form-control{{ $errors->has('date_to') ? ' is-invalid' : '' }}" value="{{ old('date_to', isset($task) ? $task->date_to : '') }}">
                                 @include('alerts.feedback', ['field' => 'date_to'])
                             </div>

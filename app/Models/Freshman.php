@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\DateController;
 
 class Freshman extends Model
 {
@@ -53,7 +54,7 @@ class Freshman extends Model
         return $freshmen;
     }
 
-    public function getTasks($verified = true, $as_type = false)
+    public function getTasks($verified = true, $as_type = false, $date_format = null)
     {
         $query = '
             SELECT t.*,
@@ -66,7 +67,10 @@ class Freshman extends Model
                 INNER JOIN `users` u ON u.`id` = t.`created_by`
             WHERE up.`id_user` = ? AND t.`type` NOT IN';
 
-        $not_in_type = ' (' . config('custom.QUEST_ID') . ',' . config('custom.MENTOR_ID') . ')';
+        $not_in_type = ' (' .
+            config('custom.QUEST_ID') . ',' .
+            config('custom.OTHER_TASK_ID') . ',' .
+            config('custom.MENTOR_ID') . ')';
         $query .= $not_in_type;
 
         if ($verified)
@@ -87,30 +91,30 @@ class Freshman extends Model
             return $tasks_as_type;
         }
 
+        if (!empty($date_format))
+        {
+            $tasks = DateController::formatDatesFromObjects($tasks, ['assigned_at', 'finished_at', 'verified_at'], $date_format);
+        }
+
         return $tasks;
     }
 
-    public function getMentoringTasks($verified = true)
+    public function getMentoringTasks($verified = true, $date_format = null)
     {
-        $query = '
-            SELECT t.*, up.*, up.id as `id_user_point`, r.name as role_name, u.`name` as created_by
-            FROM `user_points` up
-                INNER JOIN `tasks` t ON t.`id` = up.`id_task`
-                INNER JOIN `roles` r ON r.`id` = t.`type`
-                INNER JOIN `users` u ON u.`id` = t.`created_by`
-            WHERE up.`id_user` = ? AND t.`type` = ?';
-
-        if ($verified)
-        {
-            $query .= ' AND up.verified_at IS NOT NULL';
-        }
-
-        $tasks = DB::select($query, [$this->user->getAuthIdentifier(), config('custom.MENTOR_ID')]);
-
-        return $this->sortTasks($tasks);
+        return $this->getTasksByType(config('custom.MENTOR_ID'), $verified, $date_format);
     }
 
-    public function getQuests($verified = true)
+    public function getOtherTasks($verified = true, $date_format = null)
+    {
+        return $this->getTasksByType(config('custom.OTHER_TASK_ID'), $verified, $date_format);
+    }
+
+    public function getQuests($verified = true, $date_format = null)
+    {
+       return $this->getTasksByType(config('custom.QUEST_ID'), $verified, $date_format);
+    }
+
+    public function getTasksByType($type, $verified = true, $date_format = null)
     {
         $query = '
             SELECT t.*, up.*, up.id as `id_user_point`, r.name as role_name, u.`name` as created_by
@@ -125,9 +129,14 @@ class Freshman extends Model
             $query .= ' AND up.verified_at IS NOT NULL';
         }
 
-        $quests = DB::select($query, [$this->user->getAuthIdentifier(), config('custom.QUEST_ID')]);
+        $tasks = DB::select($query, [$this->user->getAuthIdentifier(), $type]);
 
-        return $this->sortTasks($quests);
+        if (!empty($date_format))
+        {
+            $tasks = DateController::formatDatesFromObjects($tasks, ['assigned_at', 'finished_at', 'verified_at'], $date_format);
+        }
+
+        return $this->sortTasks($tasks);
     }
 
     public function getPoints()

@@ -28,8 +28,7 @@
                                 <th>Description</th>
                                 <th>Type</th>
                                 <th>Points</th>
-                                <th>Date From</th>
-                                <th>Date To</th>
+                                <th>Deadline</th>
                                 <th>Active</th>
                                 <th>Created by</th>
                                 </thead>
@@ -41,13 +40,6 @@
                                         <td>{{ $task->description }}</td>
                                         <td>{{ $task->role_name }}</td>
                                         <td class="text-center">{{ $task->points }}</td>
-                                        <td>
-                                            @if(isset($task->date_from))
-                                                {{$task->date_from}}
-                                            @else
-                                                -
-                                            @endif
-                                        </td>
                                         <td>
                                             @if(isset($task->date_to))
                                                 {{$task->date_to}}

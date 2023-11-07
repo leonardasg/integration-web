@@ -149,6 +149,10 @@ class User extends Authenticatable
             'id' => config('custom.QUEST_ID'),
             'name' => 'QUEST',
         ];
+        $options[] = [
+            'id' => config('custom.OTHER_TASK_ID'),
+            'name' => 'OTHER',
+        ];
         if (auth()->user()->isZIKCoordinator() || auth()->user()->isAdmin())
         {
             $options[] = [

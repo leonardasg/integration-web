@@ -53,7 +53,7 @@ class TaskController extends Controller
         $user = auth()->user();
         $options = $user->getRolesAsOptions();
 
-        $task = Task::find($request->get('task'));
+        $task = Task::find($request->get('id_task'));
         return view('tasks.task_form', ['task' => $task, 'task_types' => $options]);
     }
 
@@ -62,14 +62,20 @@ class TaskController extends Controller
         try {
             $task = new Task();
 
+            $active = $request->get('active') ?? false;
+            $type = $request->get('type');
+            if ($type == config('custom.OTHER_TASK_ID'))
+            {
+                $active = true;
+            }
+
             $task->name = $request->get('name');
             $task->description = $request->get('description');
             $task->points = $request->get('points');
             $task->created_by = auth()->user()->getAuthIdentifier();
             $task->type = $request->get('type');
-            $task->date_from = $request->get('date_from');
             $task->date_to = $request->get('date_to');
-            $task->active = $request->get('active') ?? false;
+            $task->active = $active;
 
             if (!$task->save())
             {

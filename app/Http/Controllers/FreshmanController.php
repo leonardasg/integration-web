@@ -22,9 +22,10 @@ class FreshmanController extends Controller
         $user = User::find($request->get('id_user'));
         $freshman = new Freshman($user);
 
-        $tasks = $freshman->getTasks(false);
-        $mentor_tasks = $freshman->getMentoringTasks(false);
-        $quests = $freshman->getQuests(false);
+        $tasks = $freshman->getTasks(false, false, 'Y-m-d');
+        $mentor_tasks = $freshman->getMentoringTasks(false, 'Y-m-d');
+        $others = $freshman->getOtherTasks(false, 'Y-m-d');
+        $quests = $freshman->getQuests(false, 'Y-m-d');
         $freshmen = Freshman::getFreshmen();
 
         return view('tasks.freshman_tasks', [
@@ -32,7 +33,9 @@ class FreshmanController extends Controller
             'freshman' => $freshman,
             'quests' => $quests,
             'mentor_tasks' => $mentor_tasks,
-            'freshmen' => $freshmen]);
+            'other_tasks' => $others,
+            'freshmen' => $freshmen
+        ]);
     }
 
     public function getPointsForDisplay()

@@ -31,6 +31,7 @@ class HomeController extends Controller
             $tasks = $freshman->getTasks(false, true);
             $mentoring_tasks = $freshman->getMentoringTasks(false);
             $quests = $freshman->getQuests(false);
+            $others = $freshman->getOtherTasks(false);
             $levels = Level::all();
 
             return view('dashboard', [
@@ -39,6 +40,7 @@ class HomeController extends Controller
                 'quests' => $quests,
                 'levels' => $levels,
                 'mentor_tasks' => $mentoring_tasks,
+                'other_tasks' => $others,
             ]);
         }
 

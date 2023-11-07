@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class Task extends Model
 {
-    protected $fillable = ['name', 'description', 'created_by', 'points', 'type', 'date_from', 'date_to', 'active'];
+    protected $fillable = ['name', 'description', 'created_by', 'points', 'type', 'date_to', 'active'];
 
     public function role()
     {

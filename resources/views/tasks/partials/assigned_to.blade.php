@@ -27,11 +27,7 @@
                 </td>
                 <td class="text-center">{{$task->assigned_to[0]->count}}</td>
 
-                @if(auth()->user()->getAuthIdentifier() == $task->created_by ||
-                        auth()->user()->isAdmin() ||
-                        $task->type == config('custom.QUEST_ID') ||
-                        auth()->user()->isCoordinator($task->type)
-                    )
+                @if(auth()->user()->canEditTask($task))
                     <td class="text-right">
                         <div class="dropdown">
                             <button type="button" class="btn btn-link dropdown-toggle btn-icon" data-toggle="dropdown">
@@ -97,11 +93,7 @@
                         </td>
                         <td class="text-center">{{$task->assigned_to[$index]->count}}</td>
 
-                        @if(auth()->user()->getAuthIdentifier() == $task->created_by ||
-                                auth()->user()->isAdmin() ||
-                                $task->type == config('custom.QUEST_ID') ||
-                                auth()->user()->isCoordinator($task->type)
-                            )
+                        @if(auth()->user()->canEditTask($task))
                             <td class="text-right">
                                 <div class="dropdown">
                                     <button type="button" class="btn btn-link dropdown-toggle btn-icon"

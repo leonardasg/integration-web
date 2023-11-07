@@ -174,3 +174,8 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     color: #e14eca;
     padding-left: 5px;
 }
+
+.date
+{
+    min-width: 100px;
+}

@@ -27,6 +27,8 @@
 
                 @include('tasks.freshman_tasks_dashboard', ['tasks' => $mentor_tasks, 'table_name' => __('Mentoring tasks')])
 
+                @include('tasks.freshman_tasks_dashboard', ['tasks' => $other_tasks, 'table_name' => __('Other tasks')])
+
                 @include('tasks.freshman_tasks_dashboard', ['tasks' => $quests, 'table_name' => __('Quests')])
             </div>
 
