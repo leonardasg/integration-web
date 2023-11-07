@@ -92,7 +92,7 @@ class TaskController extends Controller
     public function update(TaskRequest $request)
     {
         try {
-            $task = Task::find($request->get('task'));
+            $task = Task::find($request->get('id_task'));
             if (!$task->update($request->all()))
             {
                 throw new \Exception('Update failed.');
