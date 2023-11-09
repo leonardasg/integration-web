@@ -51,7 +51,7 @@
                                         <td>{{ $task->name }}</td>
                                         <td>{{ $task->description }}</td>
                                         <td class="text-center">{{ $task->points }}</td>
-                                        <td>{{ $task->assigned_at }}</td>
+                                        <td class="text-center">{{ $task->assigned_at }}</td>
                                         <td class="text-center">
                                             @if($task->finished_at)
                                                 {{ $task->finished_at }}
@@ -70,7 +70,7 @@
                                     @elseif(isset($info) && $info == 'quests')
                                         <td>{{$loop->index + 1}}</td>
                                         <td>{{ $task->name }}</td>
-                                        <td>{{ $task->assigned_at }}</td>
+                                        <td class="text-center">{{ $task->assigned_at }}</td>
                                         <td class="text-center">
                                             @if($task->finished_at)
                                                 {{ $task->finished_at }}
@@ -92,7 +92,7 @@
                                         <td>{{ $task->role_name }}</td>
                                         <td class="text-center">{{ $task->points }}</td>
                                         <td>{{ $task->created_by }}</td>
-                                        <td>{{ $task->assigned_at }}</td>
+                                        <td class="text-center">{{ $task->assigned_at }}</td>
                                         <td class="text-center">
                                             @if($task->finished_at)
                                                 {{ $task->finished_at }}
