@@ -336,7 +336,7 @@ class TaskController extends Controller
             {
                 // skip if already verified
                 $user_point = UserPoint::get()->where('id_user', $freshman_id)->where('id_task', $task->id)->first();
-                if (!empty($user_point->verified_at))
+                if (!isset($user_point) || !empty($user_point->verified_at))
                 {
                     continue;
                 }

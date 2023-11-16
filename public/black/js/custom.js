@@ -132,7 +132,7 @@ custom = {
             if (!checkbox.is(':checked')) {
                 checkbox.prop('checked', true).attr('checked', 'checked');
                 if ($(this).is('#freshman-checkbox-all')) {
-                    $('[id^="freshman-checkbox-"] input[type="checkbox"]').prop('checked', true);
+                    $('[id^="freshman-checkbox-"] input[type="checkbox"][data-assigned="true"]').prop('checked', true);
                 }
 
                 if ($(this).is('#freshman-checkbox-all-finished')) {
@@ -246,6 +246,7 @@ custom = {
 
                     if (all_finished) {
                         $('input[type="checkbox"][name="freshman[]"][value="all-finished"]').prop('checked', true);
+                        $('[id^="freshman-checkbox-all-finished"] input[type="checkbox"]').prop('checked', true);
                     }
 
                     const assigned = response.data.assigned;
